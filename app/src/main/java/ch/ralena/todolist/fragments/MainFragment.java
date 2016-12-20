@@ -22,26 +22,29 @@ import ch.ralena.todolist.objects.TodoList;
 
 public class MainFragment extends Fragment {
 	private List<TodoList> mTodoLists;
+	MainAdapter mAdapter;
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		mTodoLists = new ArrayList<>();
 
-		for (int i = 0; i < 10; i++) {
-			mTodoLists.add(new TodoList("Task " + i));
-		}
-
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
 
 		// set up RecyclerView and adapter
 		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-		MainAdapter adapter = new MainAdapter(mTodoLists);
-		recyclerView.setAdapter(adapter);
+		mAdapter = new MainAdapter(mTodoLists);
+		recyclerView.setAdapter(mAdapter);
 		// prepare LayoutManager
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 		recyclerView.setLayoutManager(layoutManager);
 
 		return view;
+	}
+
+	public void addTodoList(TodoList todoList) {
+		mTodoLists.add(todoList);
+		mAdapter.updateTodoList(mTodoLists);
+		mAdapter.notifyDataSetChanged();
 	}
 }

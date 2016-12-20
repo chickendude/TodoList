@@ -22,6 +22,10 @@ public class MainAdapter extends RecyclerView.Adapter {
 		mTodoLists = todoLists;
 	}
 
+	public void updateTodoList(List<TodoList> todoLists) {
+		mTodoLists = todoLists;
+	}
+
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_todolist, parent, false);

@@ -1,6 +1,5 @@
 package ch.ralena.todolist.fragments;
 
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,6 +24,7 @@ import ch.ralena.todolist.objects.TodoList;
 public class NewTodoListFragment extends DialogFragment {
 
 	private SubmitNewTodoListListener listener;
+	private EditText mEditText;
 
 	public interface SubmitNewTodoListListener {
 		void onSubmittedNewTodoList(TodoList todoList);
@@ -39,37 +40,49 @@ public class NewTodoListFragment extends DialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// make dialog disappear when you click outside
-		final Dialog dialog = getDialog();
-		dialog.setCanceledOnTouchOutside(true);
+		getDialog().setCanceledOnTouchOutside(true);
 		// set up views
-		final View view = inflater.inflate(R.layout.fragment_new_todo_list, container);
-		// set up edittext listener
-		final EditText editText = (EditText) view.findViewById(R.id.titleEdit);
-		editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		View view = inflater.inflate(R.layout.fragment_new_todo_list, container);
+
+		// set up onclick listener for create button
+		Button button = (Button) view.findViewById(R.id.createButton);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				sendData();
+			}
+		});
+
+		// set up edittext listener for pressing Enter
+		mEditText = (EditText) view.findViewById(R.id.titleEdit);
+		mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
 				boolean handled = false;
 				if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_NULL) {
-					String title = editText.getText().toString();
-					if (!title.equals("")) {
-						TodoList todoList = new TodoList(title);
-						listener.onSubmittedNewTodoList(todoList);
-						dialog.dismiss();
-						handled = true;
-					}
+					sendData();
 				}
 				return handled;
 			}
 		});
 		// make keyboard popup
-		editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+		mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View view, boolean hasFocus) {
 				if (hasFocus) {
-					dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+					getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 				}
 			}
 		});
 		return view;
+	}
+
+	public void sendData() {
+		String title = mEditText.getText().toString();
+		if (!title.equals("")) {
+			TodoList todoList = new TodoList(title);
+			listener.onSubmittedNewTodoList(todoList);
+			getDialog().dismiss();
+		}
 	}
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import ch.ralena.todolist.fragments.MainFragment;
 import ch.ralena.todolist.fragments.NewTodoListFragment;
@@ -46,12 +45,10 @@ public class MainActivity extends AppCompatActivity implements NewTodoListFragme
 		NewTodoListFragment newTodoListFragment = new NewTodoListFragment();
 		newTodoListFragment.setStyle(DialogFragment.STYLE_NO_FRAME, 0);
 		newTodoListFragment.show(getFragmentManager(), TAG_NEW_TODO_LIST);
-		Toast.makeText(this, "Create new list", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onSubmittedNewTodoList(TodoList todoList) {
-		Toast.makeText(this, todoList.getTitle(), Toast.LENGTH_SHORT).show();
-
+		mMainFragment.addTodoList(todoList);
 	}
 }
