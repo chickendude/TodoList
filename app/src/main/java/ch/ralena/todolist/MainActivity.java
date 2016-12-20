@@ -22,14 +22,11 @@ public class MainActivity extends AppCompatActivity {
 		// Load main fragment
 		FragmentManager fragmentManager = getSupportFragmentManager();
 
-		// make sure we don't load multiple fragments
-		if (savedInstanceState == null) {
-			mMainFragment = new MainFragment();
-		}
-
+		// make sure we don't load it multiple times
 		MainFragment savedFragment = (MainFragment) fragmentManager
 				.findFragmentByTag(TAG_MAIN_FRAGMENT);
 		if (savedFragment == null) {
+			mMainFragment = new MainFragment();
 			fragmentManager
 					.beginTransaction()
 					.add(R.id.placeHolder, mMainFragment, TAG_MAIN_FRAGMENT)
