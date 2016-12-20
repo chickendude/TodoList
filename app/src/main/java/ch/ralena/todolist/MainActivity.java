@@ -19,16 +19,23 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		// Load main fragment
+		FragmentManager fragmentManager = getSupportFragmentManager();
+
 		// make sure we don't load multiple fragments
 		if (savedInstanceState == null) {
 			mMainFragment = new MainFragment();
 		}
 
-		// Load main fragment
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager
-				.beginTransaction()
-				.add(R.id.placeHolder, mMainFragment, TAG_MAIN_FRAGMENT)
-				.commit();
+		MainFragment savedFragment = (MainFragment) fragmentManager
+				.findFragmentByTag(TAG_MAIN_FRAGMENT);
+		if (savedFragment == null) {
+			fragmentManager
+					.beginTransaction()
+					.add(R.id.placeHolder, mMainFragment, TAG_MAIN_FRAGMENT)
+					.commit();
+		} else {
+			mMainFragment = (MainFragment) fragmentManager.findFragmentByTag(TAG_MAIN_FRAGMENT);
+		}
 	}
 }

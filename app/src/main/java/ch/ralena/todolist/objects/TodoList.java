@@ -8,10 +8,12 @@ import java.util.List;
  */
 
 public class TodoList {
+	private String mTitle;
 	private List<Todo> mTodoList;
 	private boolean mIsCompleted;
 
-	public TodoList() {
+	public TodoList(String title) {
+		mTitle = title;
 		mTodoList = new ArrayList<>();
 	}
 
@@ -21,6 +23,14 @@ public class TodoList {
 
 	public void remove(Todo todo) {
 		mTodoList.remove(todo);
+	}
+
+	public String getTitle() {
+		return mTitle;
+	}
+
+	public void setTitle(String title) {
+		mTitle = title;
 	}
 
 	public List<Todo> getTodoList() {
