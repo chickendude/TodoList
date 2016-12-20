@@ -1,8 +1,10 @@
 package ch.ralena.todolist;
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import ch.ralena.todolist.fragments.MainFragment;
 
@@ -34,5 +36,9 @@ public class MainActivity extends AppCompatActivity {
 		} else {
 			mMainFragment = (MainFragment) fragmentManager.findFragmentByTag(TAG_MAIN_FRAGMENT);
 		}
+	}
+
+	public void onFabClick(View view) {
+		Toast.makeText(this, "Create new list", Toast.LENGTH_SHORT).show();
 	}
 }
