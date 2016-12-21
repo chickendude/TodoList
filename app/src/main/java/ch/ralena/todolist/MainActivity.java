@@ -1,7 +1,7 @@
 package ch.ralena.todolist;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NewTodoListFragme
 		animateFab(view, View.INVISIBLE);
 		NewTodoListFragment newTodoListFragment = new NewTodoListFragment();
 		newTodoListFragment.setStyle(DialogFragment.STYLE_NO_FRAME, 0);
-		newTodoListFragment.show(getFragmentManager(), TAG_NEW_TODO_LIST);
+		newTodoListFragment.show(getSupportFragmentManager(), TAG_NEW_TODO_LIST);
 	}
 
 	private void animateFab(View view, int visibility) {

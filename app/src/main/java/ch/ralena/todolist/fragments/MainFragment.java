@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.MainAdapter;
 import ch.ralena.todolist.objects.TodoList;
+import ch.ralena.todolist.sql.SqlHelper;
 
 /**
  * Created by crater-windoze on 12/20/2016.
@@ -27,10 +28,15 @@ public class MainFragment extends Fragment {
 	// member fields
 	private ArrayList<TodoList> mTodoLists;
 	MainAdapter mAdapter;
+	SqlHelper mSqlHelper;
+
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		mSqlHelper = new SqlHelper(getContext());
+//		mSqlHelper.getWritableDatabase();
+//		mSqlHelper.close();
 		if (savedInstanceState == null) {
 			mTodoLists = new ArrayList<>();
 		} else {
