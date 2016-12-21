@@ -5,12 +5,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.MainAdapter;
@@ -21,13 +21,18 @@ import ch.ralena.todolist.objects.TodoList;
  */
 
 public class MainFragment extends Fragment {
-	private List<TodoList> mTodoLists;
+	private static final String TAG_TODO_LISTS = "todo_lists";
+	private ArrayList<TodoList> mTodoLists;
 	MainAdapter mAdapter;
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		mTodoLists = new ArrayList<>();
+		if (savedInstanceState == null) {
+			mTodoLists = new ArrayList<>();
+		} else {
+			mTodoLists = savedInstanceState.getParcelableArrayList(TAG_TODO_LISTS);
+		}
 
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -40,6 +45,14 @@ public class MainFragment extends Fragment {
 		recyclerView.setLayoutManager(layoutManager);
 
 		return view;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		Log.d("HI", "start");
+		outState.putParcelableArrayList(TAG_TODO_LISTS, mTodoLists);
+		Log.d("HI", "finish");
+		super.onSaveInstanceState(outState);
 	}
 
 	public void addTodoList(TodoList todoList) {
