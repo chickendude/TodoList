@@ -4,11 +4,15 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.View;
+import android.view.ViewGroup;
 
 import ch.ralena.todolist.fragments.MainFragment;
 import ch.ralena.todolist.fragments.NewTodoListFragment;
 import ch.ralena.todolist.objects.TodoList;
+import ch.ralena.todolist.transitions.Scale;
 
 // TODO: Add floating button
 // TODO: Load main fragment
@@ -42,9 +46,23 @@ public class MainActivity extends AppCompatActivity implements NewTodoListFragme
 	}
 
 	public void onFabClick(View view) {
+		animateFab(view, View.INVISIBLE);
 		NewTodoListFragment newTodoListFragment = new NewTodoListFragment();
 		newTodoListFragment.setStyle(DialogFragment.STYLE_NO_FRAME, 0);
 		newTodoListFragment.show(getFragmentManager(), TAG_NEW_TODO_LIST);
+	}
+
+	private void animateFab(View view, int visibility) {
+		Transition fab = new Scale();
+		fab.addTarget(view);
+		ViewGroup viewGroup = (ViewGroup) findViewById(R.id.placeHolder);
+		TransitionManager.beginDelayedTransition(viewGroup, fab);
+		view.setVisibility(visibility);
+	}
+
+	@Override
+	public void onCancelNewTodoList() {
+		animateFab(findViewById(R.id.fab), View.VISIBLE);
 	}
 
 	@Override

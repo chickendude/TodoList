@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,11 @@ import ch.ralena.todolist.objects.TodoList;
  */
 
 public class MainFragment extends Fragment {
+	// constants
+	private static final String TAG = MainFragment.class.getSimpleName();
 	private static final String TAG_TODO_LISTS = "todo_lists";
+
+	// member fields
 	private ArrayList<TodoList> mTodoLists;
 	MainAdapter mAdapter;
 
@@ -49,9 +52,7 @@ public class MainFragment extends Fragment {
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		Log.d("HI", "start");
 		outState.putParcelableArrayList(TAG_TODO_LISTS, mTodoLists);
-		Log.d("HI", "finish");
 		super.onSaveInstanceState(outState);
 	}
 

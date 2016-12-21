@@ -2,6 +2,7 @@ package ch.ralena.todolist.fragments;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;
@@ -28,12 +29,19 @@ public class NewTodoListFragment extends DialogFragment {
 
 	public interface SubmitNewTodoListListener {
 		void onSubmittedNewTodoList(TodoList todoList);
+		void onCancelNewTodoList();
 	}
 
 	@Override
 	public void onAttach(Context context) {
 		super.onAttach(context);
 		listener = (SubmitNewTodoListListener) context;
+	}
+
+	@Override
+	public void onDismiss(DialogInterface dialog) {
+		listener.onCancelNewTodoList();
+		super.onDismiss(dialog);
 	}
 
 	@Nullable
@@ -82,7 +90,7 @@ public class NewTodoListFragment extends DialogFragment {
 		if (!title.equals("")) {
 			TodoList todoList = new TodoList(title);
 			listener.onSubmittedNewTodoList(todoList);
-			getDialog().dismiss();
 		}
+		getDialog().dismiss();
 	}
 }
