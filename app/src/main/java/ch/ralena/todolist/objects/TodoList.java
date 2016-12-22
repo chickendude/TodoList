@@ -24,6 +24,7 @@ public class TodoList implements Parcelable {
 	public TodoList(long id, String title, boolean isCompleted) {
 		mId = id;
 		mTitle = title;
+		mTodoList = new ArrayList<>();
 		mIsCompleted = isCompleted;
 	}
 

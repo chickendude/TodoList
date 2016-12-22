@@ -73,6 +73,7 @@ public class MainFragment extends Fragment implements MainAdapter.OnDeleteClicke
 
 	@Override
 	public void onDeleteClicked(TodoList todoList) {
+		//todo: remove from database as well-
 		mTodoLists.remove(todoList);
 		mAdapter.updateTodoList(mTodoLists);
 		mAdapter.notifyDataSetChanged();
