@@ -11,6 +11,7 @@ import java.util.List;
  */
 
 public class TodoList implements Parcelable {
+	private long mId;
 	private String mTitle;
 	private ArrayList<Todo> mTodoList;
 	private boolean mIsCompleted;
@@ -18,6 +19,12 @@ public class TodoList implements Parcelable {
 	public TodoList(String title) {
 		mTitle = title;
 		mTodoList = new ArrayList<>();
+	}
+
+	public TodoList(long id, String title, boolean isCompleted) {
+		mId = id;
+		mTitle = title;
+		mIsCompleted = isCompleted;
 	}
 
 	protected TodoList(Parcel in) {
@@ -44,6 +51,14 @@ public class TodoList implements Parcelable {
 
 	public void remove(Todo todo) {
 		mTodoList.remove(todo);
+	}
+
+	public long getId() {
+		return mId;
+	}
+
+	public void setId(long id) {
+		mId = id;
 	}
 
 	public String getTitle() {
@@ -77,8 +92,8 @@ public class TodoList implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel parcel, int i) {
-		parcel.writeInt(mIsCompleted ? 1 : 0);	// mIsCompleted
-		parcel.writeString(mTitle);	// mTitle
-		parcel.writeTypedArray((Todo[])mTodoList.toArray(), 0);
+		parcel.writeInt(mIsCompleted ? 1 : 0);    // mIsCompleted
+		parcel.writeString(mTitle); // mTitle
+		parcel.writeTypedArray((Todo[]) mTodoList.toArray(new Todo[mTodoList.size()]), 0);
 	}
 }

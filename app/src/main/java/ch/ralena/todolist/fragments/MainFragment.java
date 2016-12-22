@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.MainAdapter;
 import ch.ralena.todolist.objects.TodoList;
-import ch.ralena.todolist.sql.SqlHelper;
+import ch.ralena.todolist.sql.SqlManager;
 
 /**
  * Created by crater-windoze on 12/20/2016.
@@ -28,17 +29,17 @@ public class MainFragment extends Fragment {
 	// member fields
 	private ArrayList<TodoList> mTodoLists;
 	MainAdapter mAdapter;
-	SqlHelper mSqlHelper;
+	SqlManager mSqlManager;
 
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		mSqlHelper = new SqlHelper(getContext());
-//		mSqlHelper.getWritableDatabase();
-//		mSqlHelper.close();
+		mSqlManager = new SqlManager(getContext());
 		if (savedInstanceState == null) {
-			mTodoLists = new ArrayList<>();
+			Log.d(TAG, "saved instance null");
+			mTodoLists = mSqlManager.getTodoLists();
+			Log.d(TAG, mTodoLists.size()+" ---------------------------------");
 		} else {
 			mTodoLists = savedInstanceState.getParcelableArrayList(TAG_TODO_LISTS);
 		}
@@ -63,6 +64,8 @@ public class MainFragment extends Fragment {
 	}
 
 	public void addTodoList(TodoList todoList) {
+		long id = mSqlManager.createTodoList(todoList);
+		todoList.setId(id);
 		mTodoLists.add(todoList);
 		mAdapter.updateTodoList(mTodoLists);
 		mAdapter.notifyDataSetChanged();
