@@ -8,4 +8,9 @@
 		<item name="colorAccent">@color/colorAccent</item>
 	</style>
 
+	<style name="NewTodoListAnimation">
+		<item name="android:windowEnterAnimation">@anim/scale_up</item>
+		<item name="android:windowExitAnimation">@anim/scale_down</item>
+	</style>
+
 </resources>

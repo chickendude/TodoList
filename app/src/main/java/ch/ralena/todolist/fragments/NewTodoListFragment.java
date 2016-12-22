@@ -39,6 +39,15 @@ public class NewTodoListFragment extends DialogFragment {
 	}
 
 	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		getDialog()
+				.getWindow()
+				.getAttributes()
+				.windowAnimations = R.style.NewTodoListAnimation;
+	}
+
+	@Override
 	public void onDismiss(DialogInterface dialog) {
 		listener.onCancelNewTodoList();
 		super.onDismiss(dialog);
