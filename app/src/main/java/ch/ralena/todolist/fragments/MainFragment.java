@@ -21,7 +21,7 @@ import ch.ralena.todolist.sql.SqlManager;
  * Created by crater-windoze on 12/20/2016.
  */
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements MainAdapter.OnDeleteClickedListener {
 	// constants
 	private static final String TAG = MainFragment.class.getSimpleName();
 	private static final String TAG_TODO_LISTS = "todo_lists";
@@ -48,7 +48,7 @@ public class MainFragment extends Fragment {
 
 		// set up RecyclerView and adapter
 		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-		mAdapter = new MainAdapter(mTodoLists);
+		mAdapter = new MainAdapter(mTodoLists, this);
 		recyclerView.setAdapter(mAdapter);
 		// prepare LayoutManager
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -67,6 +67,13 @@ public class MainFragment extends Fragment {
 		long id = mSqlManager.createTodoList(todoList);
 		todoList.setId(id);
 		mTodoLists.add(todoList);
+		mAdapter.updateTodoList(mTodoLists);
+		mAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onDeleteClicked(TodoList todoList) {
+		mTodoLists.remove(todoList);
 		mAdapter.updateTodoList(mTodoLists);
 		mAdapter.notifyDataSetChanged();
 	}
