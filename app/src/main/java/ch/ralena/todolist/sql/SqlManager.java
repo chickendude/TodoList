@@ -41,7 +41,7 @@ public class SqlManager {
 
 		Cursor cursor = database.query(
 				SqlHelper.TABLE_TODOLIST,
-				new String[] {title_col, is_completed_col, id_col},
+				new String[]{title_col, is_completed_col, id_col},
 				null,
 				null,
 				null,
@@ -76,6 +76,19 @@ public class SqlManager {
 	private String getString(Cursor cursor, String columnName) {
 		int index = cursor.getColumnIndex(columnName);
 		return cursor.getString(index);
+	}
+
+	public void deleteTodoList(TodoList todoList) {
+		SQLiteDatabase database = mSqlHelper.getWritableDatabase();
+		database.beginTransaction();
+
+		String whereClause = BaseColumns._ID + "=?";
+		String[] whereArgs = new String[]{String.valueOf(todoList.getId())};
+		database.delete(SqlHelper.TABLE_TODOLIST, whereClause, whereArgs);
+
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		database.close();
 	}
 
 	// returns id
