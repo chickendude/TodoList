@@ -63,6 +63,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 		CheckBox mCompletedCheckBox;
 
 		public ViewHolder(View view) {
+			// TODO: "Close" mTitleEdit when typing enter
 			super(view);
 			mTodoList = null;
 			mTitleLabel = (TextView) view.findViewById(R.id.titleLabel);
@@ -80,8 +81,8 @@ public class MainAdapter extends RecyclerView.Adapter {
 
 		CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
 			@Override
-			public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-				mTodoList.setCompleted(b);
+			public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+				mTodoList.setCompleted(isChecked);
 				mListener.onCompletionStatusChanged(mTodoList);
 			}
 		};
