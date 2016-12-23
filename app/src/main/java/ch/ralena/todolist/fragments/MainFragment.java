@@ -20,7 +20,7 @@ import ch.ralena.todolist.sql.SqlManager;
  * Created by crater-windoze on 12/20/2016.
  */
 
-public class MainFragment extends Fragment implements MainAdapter.OnDeleteClickedListener {
+public class MainFragment extends Fragment implements MainAdapter.OnDataChangedListener {
 	// constants
 	private static final String TAG = MainFragment.class.getSimpleName();
 	private static final String TAG_TODO_LISTS = "todo_lists";
@@ -74,5 +74,10 @@ public class MainFragment extends Fragment implements MainAdapter.OnDeleteClicke
 		mTodoLists.remove(todoList);
 		mAdapter.updateTodoList(mTodoLists);
 		mAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onTitleEdited(TodoList todoList) {
+		mSqlManager.updateTodoListTitle(todoList);
 	}
 }

@@ -22,14 +22,15 @@ import ch.ralena.todolist.objects.TodoList;
 
 public class MainAdapter extends RecyclerView.Adapter {
 	// public interfaces
-	public interface OnDeleteClickedListener {
+	public interface OnDataChangedListener {
 		void onDeleteClicked(TodoList todoList);
+		void onTitleEdited(TodoList todoList);
 	}
 
 	List<TodoList> mTodoLists;
-	OnDeleteClickedListener mListener;
+	OnDataChangedListener mListener;
 
-	public MainAdapter(List<TodoList> todoLists, OnDeleteClickedListener listener) {
+	public MainAdapter(List<TodoList> todoLists, OnDataChangedListener listener) {
 		mTodoLists = todoLists;
 		mListener = listener;
 	}
@@ -143,8 +144,8 @@ public class MainAdapter extends RecyclerView.Adapter {
 		}
 
 		private void saveChanges() {
-			// TODO: Update mysql/mainfragment
 			mTodoList.setTitle(mTitleEdit.getText().toString());
+			mListener.onTitleEdited(mTodoList);
 			hideEditor();
 		}
 	}

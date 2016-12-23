@@ -14,9 +14,7 @@ import ch.ralena.todolist.fragments.NewTodoListFragment;
 import ch.ralena.todolist.objects.TodoList;
 import ch.ralena.todolist.transitions.Scale;
 
-// TODO: Add floating button
-// TODO: Load main fragment
-
+// TODO: Check into automatic animations via layout
 public class MainActivity extends AppCompatActivity implements NewTodoListFragment.SubmitNewTodoListListener {
 
 	private static final String TAG_MAIN_FRAGMENT = "main_fragment";

@@ -107,4 +107,20 @@ public class SqlManager {
 
 		return id;
 	}
+
+	public void updateTodoListTitle(TodoList todoList) {
+		SQLiteDatabase database = mSqlHelper.getWritableDatabase();
+		database.beginTransaction();
+
+		ContentValues todoListValues = new ContentValues();
+		todoListValues.put(SqlHelper.COL_TODOLIST_TITLE, todoList.getTitle());
+
+		String whereClause = BaseColumns._ID + "=?";
+		String[] whereArgs = new String[]{String.valueOf(todoList.getId())};
+		database.update(SqlHelper.TABLE_TODOLIST, todoListValues, whereClause, whereArgs);
+
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		database.close();
+	}
 }
