@@ -11,9 +11,12 @@
 
 	<TextView
 		android:id="@+id/titleLabel"
-		android:textSize="26sp"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:clickable="true"
+		android:focusable="true"
+		android:focusableInTouchMode="true"
+		android:textSize="26sp"
 		tools:text="Title of Todo List"/>
 
 
@@ -21,8 +24,31 @@
 		android:id="@+id/titleEdit"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_toLeftOf="@+id/confirmLayout"
 		android:textSize="26sp"
 		android:visibility="gone"
 		tools:text="Title of Todo List"/>
+
+	<LinearLayout
+		android:id="@+id/confirmLayout"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentEnd="true"
+		android:layout_centerVertical="true"
+		android:orientation="horizontal"
+		android:visibility="gone">
+
+		<ImageView
+			android:id="@+id/saveButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:srcCompat="?android:attr/textCheckMark"/>
+
+		<ImageView
+			android:id="@+id/cancelButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:srcCompat="@android:drawable/ic_delete"/>
+	</LinearLayout>
 
 </RelativeLayout>

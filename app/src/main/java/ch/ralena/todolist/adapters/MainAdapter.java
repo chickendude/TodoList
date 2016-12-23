@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -56,20 +58,19 @@ public class MainAdapter extends RecyclerView.Adapter {
 		TextView mTitleLabel;
 		EditText mTitleEdit;
 		TodoList mTodoList;
+		LinearLayout mConfirmLayout;
 
 		public ViewHolder(View view) {
 			super(view);
 			mTodoList = null;
 			mTitleLabel = (TextView) view.findViewById(R.id.titleLabel);
 			mTitleEdit = (EditText) view.findViewById(R.id.titleEdit);
+			mConfirmLayout = (LinearLayout) view.findViewById(R.id.confirmLayout);
 		}
 
 		public void bindView(final TodoList todoList) {
 			mTodoList = todoList;
-			mTitleLabel.setVisibility(View.VISIBLE);
-			mTitleLabel.setText(todoList.getTitle());
-			mTitleLabel.setOnLongClickListener(longClickListener);
-			mTitleEdit.setVisibility(View.GONE);
+			hideEditor();
 		}
 
 		View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
@@ -88,11 +89,9 @@ public class MainAdapter extends RecyclerView.Adapter {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				int id = item.getItemId();
-				switch(id) {
+				switch (id) {
 					case R.id.editTitle:
-						mTitleEdit.setText(mTitleLabel.getText());
-						mTitleEdit.setVisibility(View.VISIBLE);
-						mTitleLabel.setVisibility(View.GONE);
+						setupEditText();
 						break;
 					case R.id.delete:
 						mListener.onDeleteClicked(mTodoList);
@@ -103,5 +102,50 @@ public class MainAdapter extends RecyclerView.Adapter {
 				return false;
 			}
 		};
+
+		private void hideEditor() {
+			mTitleLabel.setVisibility(View.VISIBLE);
+			mTitleLabel.setText(mTodoList.getTitle());
+			mTitleLabel.setOnLongClickListener(longClickListener);
+			mTitleEdit.setVisibility(View.GONE);
+			mConfirmLayout.setVisibility(View.GONE);
+		}
+
+		private void setupEditText() {
+			mTitleEdit.setText(mTitleLabel.getText());
+			mTitleEdit.setVisibility(View.VISIBLE);
+			mConfirmLayout.setVisibility(View.VISIBLE);
+			mTitleLabel.setVisibility(View.GONE);
+			mTitleEdit.requestFocus();
+			mTitleEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+				@Override
+				public void onFocusChange(View view, boolean hasFocus) {
+					if (!hasFocus) {
+						saveChanges();
+					}
+				}
+			});
+
+			ImageView saveButton = (ImageView) mConfirmLayout.findViewById(R.id.saveButton);
+			ImageView cancelButton = (ImageView) mConfirmLayout.findViewById(R.id.cancelButton);
+			saveButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					saveChanges();
+				}
+			});
+			cancelButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					hideEditor();
+				}
+			});
+		}
+
+		private void saveChanges() {
+			// TODO: Update mysql/mainfragment
+			mTodoList.setTitle(mTitleEdit.getText().toString());
+			hideEditor();
+		}
 	}
 }
