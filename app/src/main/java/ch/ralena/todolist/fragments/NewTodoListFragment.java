@@ -59,7 +59,7 @@ public class NewTodoListFragment extends DialogFragment {
 		// make dialog disappear when you click outside
 		getDialog().setCanceledOnTouchOutside(true);
 		// set up views
-		View view = inflater.inflate(R.layout.fragment_new_todo_list, container);
+		View view = inflater.inflate(R.layout.fragment_new_todolist, container);
 
 		// set up onclick listener for create button
 		Button button = (Button) view.findViewById(R.id.createButton);

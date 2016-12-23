@@ -109,11 +109,20 @@ public class SqlManager {
 	}
 
 	public void updateTodoListTitle(TodoList todoList) {
-		SQLiteDatabase database = mSqlHelper.getWritableDatabase();
-		database.beginTransaction();
-
 		ContentValues todoListValues = new ContentValues();
 		todoListValues.put(SqlHelper.COL_TODOLIST_TITLE, todoList.getTitle());
+		updateTodoList(todoList, todoListValues);
+	}
+
+	public void updateTodoListCompleted(TodoList todoList) {
+		ContentValues todoListValues = new ContentValues();
+		todoListValues.put(SqlHelper.COL_TODOLIST_COMPLETED, todoList.isCompleted());
+		updateTodoList(todoList, todoListValues);
+	}
+
+	private void updateTodoList(TodoList todoList, ContentValues todoListValues) {
+		SQLiteDatabase database = mSqlHelper.getWritableDatabase();
+		database.beginTransaction();
 
 		String whereClause = BaseColumns._ID + "=?";
 		String[] whereArgs = new String[]{String.valueOf(todoList.getId())};

@@ -80,4 +80,9 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 	public void onTitleEdited(TodoList todoList) {
 		mSqlManager.updateTodoListTitle(todoList);
 	}
+
+	@Override
+	public void onCompletionStatusChanged(TodoList todoList) {
+		mSqlManager.updateTodoListCompleted(todoList);
+	}
 }
