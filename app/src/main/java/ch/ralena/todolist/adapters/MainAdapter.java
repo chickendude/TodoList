@@ -1,10 +1,12 @@
 package ch.ralena.todolist.adapters;
 
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.List;
@@ -42,8 +44,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 
 	@Override
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-		((ViewHolder)holder).bindView(mTodoLists.get(position));
-
+		((ViewHolder) holder).bindView(mTodoLists.get(position));
 	}
 
 	@Override
@@ -53,23 +54,54 @@ public class MainAdapter extends RecyclerView.Adapter {
 
 	private class ViewHolder extends RecyclerView.ViewHolder {
 		TextView mTitleLabel;
-		ImageView mDeleteButton;
+		EditText mTitleEdit;
+		TodoList mTodoList;
 
 		public ViewHolder(View view) {
 			super(view);
+			mTodoList = null;
 			mTitleLabel = (TextView) view.findViewById(R.id.titleLabel);
-			mDeleteButton = (ImageView) view.findViewById(R.id.deleteImage);
+			mTitleEdit = (EditText) view.findViewById(R.id.titleEdit);
 		}
 
 		public void bindView(final TodoList todoList) {
+			mTodoList = todoList;
+			mTitleLabel.setVisibility(View.VISIBLE);
 			mTitleLabel.setText(todoList.getTitle());
-			mDeleteButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					mListener.onDeleteClicked(todoList);
-				}
-			});
-
+			mTitleLabel.setOnLongClickListener(longClickListener);
+			mTitleEdit.setVisibility(View.GONE);
 		}
+
+		View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View view) {
+				// create a popup context menu
+				PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+				popupMenu.inflate(R.menu.context_menu_todolist);
+				popupMenu.setOnMenuItemClickListener(menuItemClickListener);
+				popupMenu.show();
+				return false;
+			}
+		};
+
+		PopupMenu.OnMenuItemClickListener menuItemClickListener = new PopupMenu.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				int id = item.getItemId();
+				switch(id) {
+					case R.id.editTitle:
+						mTitleEdit.setText(mTitleLabel.getText());
+						mTitleEdit.setVisibility(View.VISIBLE);
+						mTitleLabel.setVisibility(View.GONE);
+						break;
+					case R.id.delete:
+						mListener.onDeleteClicked(mTodoList);
+						break;
+					default:
+						break;
+				}
+				return false;
+			}
+		};
 	}
 }
