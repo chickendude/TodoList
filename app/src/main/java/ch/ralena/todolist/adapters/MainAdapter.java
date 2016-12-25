@@ -1,5 +1,6 @@
 package ch.ralena.todolist.adapters;
 
+import android.content.res.Resources;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -58,6 +59,14 @@ public class MainAdapter extends RecyclerView.Adapter {
 
 	@Override
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+		// give a margin to last item, otherwise FAB will cover up the checkbox
+		int bottomMargin = 0;
+		if (position + 1 == getItemCount()) {
+			bottomMargin = (int) (72 * Resources.getSystem().getDisplayMetrics().density);
+		}
+		ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
+		params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, bottomMargin);
+		// bind the view
 		((ViewHolder) holder).bindView(mTodoLists.get(position));
 	}
 
