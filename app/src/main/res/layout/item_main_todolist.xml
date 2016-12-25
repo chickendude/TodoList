@@ -16,7 +16,6 @@
 		android:layout_toLeftOf="@+id/completedButton"
 		android:clickable="true"
 		android:focusable="true"
-		android:focusableInTouchMode="true"
 		android:textSize="26sp"
 		tools:text="Title of Todo List"/>
 

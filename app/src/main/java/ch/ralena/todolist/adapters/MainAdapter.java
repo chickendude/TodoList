@@ -22,7 +22,9 @@ import ch.ralena.todolist.objects.TodoList;
  * Created by crater-windoze on 12/20/2016.
  */
 
+// TODO: Convert the checkbox into a button when we are in edit mode
 public class MainAdapter extends RecyclerView.Adapter {
+	public static final String TAG = MainAdapter.class.getSimpleName();
 	// public interfaces
 	public interface OnDataChangedListener {
 		void onDeleteClicked(TodoList todoList);
@@ -30,12 +32,18 @@ public class MainAdapter extends RecyclerView.Adapter {
 		void onCompletionStatusChanged(TodoList todoList);
 	}
 
-	List<TodoList> mTodoLists;
-	OnDataChangedListener mListener;
+	public interface OnItemClickedListener {
+		void onOpenTodoList(TodoList todoList);
+	}
 
-	public MainAdapter(List<TodoList> todoLists, OnDataChangedListener listener) {
+	List<TodoList> mTodoLists;
+	OnDataChangedListener mDataListener;
+	OnItemClickedListener mClickedListener;
+
+	public MainAdapter(List<TodoList> todoLists, OnDataChangedListener dataListener, OnItemClickedListener clickedListener) {
 		mTodoLists = todoLists;
-		mListener = listener;
+		mDataListener = dataListener;
+		mClickedListener = clickedListener;
 	}
 
 	public void updateTodoList(List<TodoList> todoLists) {
@@ -65,10 +73,10 @@ public class MainAdapter extends RecyclerView.Adapter {
 		CheckBox mCompletedCheckBox;
 
 		public ViewHolder(View view) {
-			// TODO: "Close" mTitleEdit when typing enter
 			super(view);
 			mTodoList = null;
 			mTitleLabel = (TextView) view.findViewById(R.id.titleLabel);
+			mTitleLabel.setOnClickListener(onClickListener);
 			mTitleLabel.setOnLongClickListener(longClickListener);
 			mCompletedCheckBox = (CheckBox) view.findViewById(R.id.completedButton);
 			mCompletedCheckBox.setOnCheckedChangeListener(checkedChangeListener);
@@ -96,7 +104,14 @@ public class MainAdapter extends RecyclerView.Adapter {
 			@Override
 			public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 				mTodoList.setCompleted(isChecked);
-				mListener.onCompletionStatusChanged(mTodoList);
+				mDataListener.onCompletionStatusChanged(mTodoList);
+			}
+		};
+
+		View.OnClickListener onClickListener = new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mClickedListener.onOpenTodoList(mTodoList);
 			}
 		};
 
@@ -121,7 +136,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 						setupEditText();
 						break;
 					case R.id.delete:
-						mListener.onDeleteClicked(mTodoList);
+						mDataListener.onDeleteClicked(mTodoList);
 						break;
 					default:
 						break;
@@ -153,7 +168,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 
 		private void saveChanges() {
 			mTodoList.setTitle(mTitleEdit.getText().toString());
-			mListener.onTitleEdited(mTodoList);
+			mDataListener.onTitleEdited(mTodoList);
 			hideEditor();
 		}
 	}

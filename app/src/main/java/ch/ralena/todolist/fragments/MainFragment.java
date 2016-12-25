@@ -3,6 +3,7 @@ package ch.ralena.todolist.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +21,7 @@ import ch.ralena.todolist.sql.SqlManager;
  * Created by crater-windoze on 12/20/2016.
  */
 
-public class MainFragment extends Fragment implements MainAdapter.OnDataChangedListener {
+public class MainFragment extends Fragment implements MainAdapter.OnDataChangedListener, MainAdapter.OnItemClickedListener {
 	// constants
 	private static final String TAG = MainFragment.class.getSimpleName();
 	private static final String TAG_TODO_LISTS = "todo_lists";
@@ -45,7 +46,7 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 
 		// set up RecyclerView and adapter
 		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-		mAdapter = new MainAdapter(mTodoLists, this);
+		mAdapter = new MainAdapter(mTodoLists, this, this);
 		recyclerView.setAdapter(mAdapter);
 		// prepare LayoutManager
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -84,5 +85,15 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 	@Override
 	public void onCompletionStatusChanged(TodoList todoList) {
 		mSqlManager.updateTodoListCompleted(todoList);
+	}
+
+	@Override
+	public void onOpenTodoList(TodoList todoList) {
+		TodoListFragment todoListFragment = new TodoListFragment();
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction()
+				.replace(R.id.placeHolder, todoListFragment)
+				.addToBackStack("HELLO")
+				.commit();
 	}
 }
