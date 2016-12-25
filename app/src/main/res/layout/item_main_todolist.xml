@@ -24,15 +24,18 @@
 		android:id="@+id/titleEdit"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:textSize="26sp"
 		android:layout_toLeftOf="@+id/completedButton"
+		android:imeActionId="@+id/titleEditReturn"
+		android:imeActionLabel="Edit"
+		android:inputType="text"
+		android:textSize="26sp"
 		android:visibility="gone"
 		tools:text="Title of Todo List"/>
 
 	<CheckBox
 		android:id="@+id/completedButton"
 		android:layout_width="wrap_content"
-		android:layout_alignParentEnd="true"
-		android:layout_height="wrap_content"/>
+		android:layout_height="wrap_content"
+		android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

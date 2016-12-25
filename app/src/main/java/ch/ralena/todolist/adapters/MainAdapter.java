@@ -2,10 +2,12 @@ package ch.ralena.todolist.adapters;
 
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -71,6 +73,17 @@ public class MainAdapter extends RecyclerView.Adapter {
 			mCompletedCheckBox = (CheckBox) view.findViewById(R.id.completedButton);
 			mCompletedCheckBox.setOnCheckedChangeListener(checkedChangeListener);
 			mTitleEdit = (EditText) view.findViewById(R.id.titleEdit);
+			mTitleEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+				@Override
+				public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+					boolean handled = false;
+					if (actionId == R.id.titleEditReturn || actionId == EditorInfo.IME_NULL) {
+						saveChanges();
+						handled = true;
+					}
+					return handled;
+				}
+			});
 		}
 
 		public void bindView(final TodoList todoList) {
