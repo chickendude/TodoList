@@ -24,7 +24,7 @@ import ch.ralena.todolist.sql.SqlManager;
 public class MainFragment extends Fragment implements MainAdapter.OnDataChangedListener, MainAdapter.OnItemClickedListener {
 	// constants
 	private static final String TAG = MainFragment.class.getSimpleName();
-	private static final String TAG_TODO_LISTS = "todo_lists";
+	public static final String TAG_TODO_LISTS = "todo_lists";
 
 	// member fields
 	private ArrayList<TodoList> mTodoLists;
@@ -90,6 +90,9 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 	@Override
 	public void onOpenTodoList(TodoList todoList) {
 		TodoListFragment todoListFragment = new TodoListFragment();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable(TAG_TODO_LISTS, todoList);
+		todoListFragment.setArguments(bundle);
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
 				.replace(R.id.placeHolder, todoListFragment)

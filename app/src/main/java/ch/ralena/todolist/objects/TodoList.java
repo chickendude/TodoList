@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by crater-windoze on 12/20/2016.
@@ -70,7 +69,7 @@ public class TodoList implements Parcelable {
 		mTitle = title;
 	}
 
-	public List<Todo> getTodoList() {
+	public ArrayList<Todo> getTodoList() {
 		return mTodoList;
 	}
 
