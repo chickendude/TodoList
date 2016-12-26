@@ -18,6 +18,8 @@ import ch.ralena.todolist.objects.Todo;
 
 public class TodoListAdapater extends RecyclerView.Adapter {
 
+	private static final int LAST_ITEM = 1;
+	private static final int TODO_ITEM = 0;
 	ArrayList<Todo> mTodos;
 
 	public TodoListAdapater(ArrayList<Todo> todos) {
@@ -25,19 +27,43 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 	}
 
 	@Override
+	public int getItemViewType(int position) {
+		if (position == getItemCount()-1) {
+			return LAST_ITEM;
+		} else if (position >= 0 && position < getItemCount()) {
+			return TODO_ITEM;
+		}
+		return -1;
+	}
+
+	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_todolist, parent, false);
-		return new ViewHolder(view);
+		switch (viewType) {
+			case TODO_ITEM:
+				return new ViewHolder(view);
+			case LAST_ITEM:
+				view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_add_new_todolist, parent, false);
+				return new ViewHolderFinal(view);
+			default:
+				return new ViewHolder(view);
+		}
 	}
 
 	@Override
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-		((ViewHolder)holder).bindView(mTodos.get(position));
+		if (position < mTodos.size()) {
+			if (holder.getItemViewType() == TODO_ITEM) {
+				((ViewHolder) holder).bindView(mTodos.get(position));
+			}
+		} else {
+//			((ViewHolderFinal) holder).bindView();
+		}
 	}
 
 	@Override
 	public int getItemCount() {
-		return mTodos.size();
+		return mTodos.size() + 1;
 	}
 
 	private class ViewHolder extends RecyclerView.ViewHolder {
@@ -53,6 +79,16 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 		public void bindView(Todo todo) {
 			mTodoLabel.setText(todo.getDescription());
 			mCompletedBox.setChecked(todo.isCompleted());
+		}
+	}
+
+	private class ViewHolderFinal extends RecyclerView.ViewHolder {
+		TextView mAddTodoLabel;
+
+		public ViewHolderFinal(View view) {
+			super(view);
+			mAddTodoLabel = (TextView) view.findViewById(R.id.addTodoLabel);
+			mAddTodoLabel.setText("+ Add new item");
 		}
 	}
 }

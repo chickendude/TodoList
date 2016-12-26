@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.CheckBox;
 
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.TodoListAdapater;
@@ -25,17 +25,17 @@ public class TodoListFragment extends Fragment {
 	TodoListAdapater mAdapter;
 
 	// Views
-	TextView mTitleLabel;
+	CheckBox mTitleBox;
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		// pull our todo list from the parcelables
+		// pull our todolist from the parcelables
 		mTodoList = getArguments().getParcelable(MainFragment.TAG_TODO_LISTS);
 		// inflate views
 		View view = inflater.inflate(R.layout.fragment_todolist, container, false);
-		mTitleLabel = (TextView) view.findViewById(R.id.titleLabel);
-		mTitleLabel.setText(mTodoList.getTitle());
+		mTitleBox = (CheckBox) view.findViewById(R.id.titleBox);
+		mTitleBox.setText(mTodoList.getTitle());
 		// set up recycler view
 		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 		mAdapter = new TodoListAdapater(mTodoList.getTodoList());
