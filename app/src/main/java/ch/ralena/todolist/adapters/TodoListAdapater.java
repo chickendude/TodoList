@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,11 +19,23 @@ import ch.ralena.todolist.objects.Todo;
 
 public class TodoListAdapater extends RecyclerView.Adapter {
 
+	public interface OnTodoItemListener {
+		void addNewTodoItem();
+		void onCompletedChanged(Todo todo);
+	}
+
 	private static final int LAST_ITEM = 1;
 	private static final int TODO_ITEM = 0;
 	ArrayList<Todo> mTodos;
+	OnTodoItemListener mListener;
 
-	public TodoListAdapater(ArrayList<Todo> todos) {
+	// constructor
+	public TodoListAdapater(ArrayList<Todo> todos, OnTodoItemListener listener) {
+		mTodos = todos;
+		mListener = listener;
+	}
+
+	public void updateTodos(ArrayList<Todo> todos) {
 		mTodos = todos;
 	}
 
@@ -56,8 +69,6 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 			if (holder.getItemViewType() == TODO_ITEM) {
 				((ViewHolder) holder).bindView(mTodos.get(position));
 			}
-		} else {
-//			((ViewHolderFinal) holder).bindView();
 		}
 	}
 
@@ -69,17 +80,28 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 	private class ViewHolder extends RecyclerView.ViewHolder {
 		private TextView mTodoLabel;
 		private CheckBox mCompletedBox;
+		private Todo mTodo;
 
 		public ViewHolder(View view) {
 			super(view);
 			mTodoLabel = (TextView) view.findViewById(R.id.todoLabel);
 			mCompletedBox = (CheckBox) view.findViewById(R.id.completedBox);
+			mCompletedBox.setOnCheckedChangeListener(mCheckedChangeListener);
 		}
 
 		public void bindView(Todo todo) {
+			mTodo = todo;
 			mTodoLabel.setText(todo.getDescription());
 			mCompletedBox.setChecked(todo.isCompleted());
 		}
+
+		CompoundButton.OnCheckedChangeListener mCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+				mTodo.setCompleted(isChecked);
+				mListener.onCompletedChanged(mTodo);
+			}
+		};
 	}
 
 	private class ViewHolderFinal extends RecyclerView.ViewHolder {
@@ -89,6 +111,12 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 			super(view);
 			mAddTodoLabel = (TextView) view.findViewById(R.id.addTodoLabel);
 			mAddTodoLabel.setText("+ Add new item");
+			mAddTodoLabel.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					mListener.addNewTodoItem();
+				}
+			});
 		}
 	}
 }

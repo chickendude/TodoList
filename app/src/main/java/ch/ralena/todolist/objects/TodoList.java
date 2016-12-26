@@ -69,7 +69,7 @@ public class TodoList implements Parcelable {
 		mTitle = title;
 	}
 
-	public ArrayList<Todo> getTodoList() {
+	public ArrayList<Todo> getTodoItems() {
 		return mTodoList;
 	}
 

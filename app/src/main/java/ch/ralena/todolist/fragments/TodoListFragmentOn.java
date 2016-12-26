@@ -10,15 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
+import java.util.ArrayList;
+
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.TodoListAdapater;
+import ch.ralena.todolist.objects.Todo;
 import ch.ralena.todolist.objects.TodoList;
 
 /**
  * Created by crater-windoze on 12/26/2016.
  */
 
-public class TodoListFragment extends Fragment {
+public class TodoListFragmentOn extends Fragment implements TodoListAdapater.OnTodoItemListener,
+		View.OnClickListener {
 	TodoList mTodoList;
 
 	// Adapters
@@ -35,13 +39,50 @@ public class TodoListFragment extends Fragment {
 		// inflate views
 		View view = inflater.inflate(R.layout.fragment_todolist, container, false);
 		mTitleBox = (CheckBox) view.findViewById(R.id.titleBox);
+		mTitleBox.setOnClickListener(this);
 		mTitleBox.setText(mTodoList.getTitle());
 		// set up recycler view
 		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-		mAdapter = new TodoListAdapater(mTodoList.getTodoList());
+		mAdapter = new TodoListAdapater(mTodoList.getTodoItems(), this);
 		recyclerView.setAdapter(mAdapter);
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 		recyclerView.setLayoutManager(layoutManager);
 		return view;
+	}
+
+	private void updateAdapterTodoList() {
+		mAdapter.updateTodos(mTodoList.getTodoItems());
+		mAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void addNewTodoItem() {
+		mTodoList.getTodoItems().add(new Todo(""));
+		updateAdapterTodoList();
+	}
+
+	@Override
+	public void onCompletedChanged(Todo todo) {
+		if (!todo.isCompleted()) {
+			mTitleBox.setChecked(false);
+		} else {
+			boolean allChecked = true;
+			for(Todo todoItem : mTodoList.getTodoItems()) {
+				if (!todoItem.isCompleted()) {
+					allChecked = false;
+				}
+			}
+			mTitleBox.setChecked(allChecked);
+		}
+	}
+
+	@Override
+	public void onClick(View view) {
+		boolean isChecked = mTitleBox.isChecked();
+		ArrayList<Todo> todos = mTodoList.getTodoItems();
+		for (Todo todo : todos) {
+			todo.setCompleted(isChecked);
+		}
+		updateAdapterTodoList();
 	}
 }

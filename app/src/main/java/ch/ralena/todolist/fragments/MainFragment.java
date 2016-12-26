@@ -89,7 +89,7 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 
 	@Override
 	public void onOpenTodoList(TodoList todoList) {
-		TodoListFragment todoListFragment = new TodoListFragment();
+		TodoListFragmentOn todoListFragment = new TodoListFragmentOn();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(TAG_TODO_LISTS, todoList);
 		todoListFragment.setArguments(bundle);
