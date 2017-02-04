@@ -8,6 +8,7 @@ import android.provider.BaseColumns;
 
 import java.util.ArrayList;
 
+import ch.ralena.todolist.objects.Todo;
 import ch.ralena.todolist.objects.TodoList;
 
 /**
@@ -54,13 +55,33 @@ public class SqlManager {
 				boolean isCompleted = getInt(cursor, is_completed_col) > 0;
 				String title = getString(cursor, title_col);
 				TodoList todoList = new TodoList(id, title, isCompleted);
+				todoList.setTodoList(getTodoItems(database, id));
 				todoLists.add(todoList);
 			} while (cursor.moveToNext());
 		}
 
 		cursor.close();
+
+
+
 		database.close();
 		return todoLists;
+	}
+
+	private ArrayList<Todo> getTodoItems(SQLiteDatabase database, long id) {
+		ArrayList<Todo> todoList = new ArrayList<>();
+		Cursor itemCursor = database.rawQuery(
+				"SELECT * FROM " + SqlHelper.TABLE_TODOITEM +
+						" WHERE " + SqlHelper.COL_TODOITEM_FOREIGN_KEY_TODOLIST + " = " + id, null);
+		if (itemCursor.moveToFirst()) {
+			long todoId = getLong(itemCursor, BaseColumns._ID);
+			boolean isCompleted = getInt(itemCursor, SqlHelper.COL_TODOITEM_COMPLETED) > 0;
+			String description = getString(itemCursor, SqlHelper.COL_TODOITEM_DESCRIPTION);
+			Todo todo = new Todo(todoId, description, isCompleted);
+			todoList.add(todo);
+		}
+		itemCursor.close();
+		return todoList;
 	}
 
 	private long getLong(Cursor cursor, String columnName) {
@@ -100,6 +121,23 @@ public class SqlManager {
 		todoListValues.put(SqlHelper.COL_TODOLIST_TITLE, todoList.getTitle());
 		todoListValues.put(SqlHelper.COL_TODOLIST_COMPLETED, todoList.isCompleted());
 		long id = database.insert(SqlHelper.TABLE_TODOLIST, null, todoListValues);
+
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		database.close();
+
+		return id;
+	}
+
+	public long createTodoListItem(Todo todo, long todoListId) {
+		SQLiteDatabase database = mSqlHelper.getWritableDatabase();
+		database.beginTransaction();
+
+		ContentValues todoItemValues = new ContentValues();
+		todoItemValues.put(SqlHelper.COL_TODOITEM_DESCRIPTION, todo.getDescription());
+		todoItemValues.put(SqlHelper.COL_TODOITEM_COMPLETED, todo.isCompleted());
+		todoItemValues.put(SqlHelper.COL_TODOITEM_FOREIGN_KEY_TODOLIST, todoListId);
+		long id = database.insert(SqlHelper.TABLE_TODOITEM, null, todoItemValues);
 
 		database.setTransactionSuccessful();
 		database.endTransaction();

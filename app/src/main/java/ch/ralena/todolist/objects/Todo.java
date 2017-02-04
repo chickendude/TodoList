@@ -10,10 +10,17 @@ import android.os.Parcelable;
 public class Todo implements Parcelable {
 	private String mDescription;
 	private boolean mIsCompleted;
+	private long mId;
 
 	public Todo(String description) {
 		mDescription = description;
 		mIsCompleted = false;
+	}
+
+	public Todo(long id, String description, boolean isCompleted) {
+		mId = id;
+		mDescription = description;
+		mIsCompleted = isCompleted;
 	}
 
 	protected Todo(Parcel in) {
@@ -47,6 +54,14 @@ public class Todo implements Parcelable {
 
 	public void setCompleted(boolean completed) {
 		mIsCompleted = completed;
+	}
+
+	public long getId() {
+		return mId;
+	}
+
+	public void setId(long id) {
+		mId = id;
 	}
 
 	@Override

@@ -25,6 +25,7 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 	// constants
 	private static final String TAG = MainFragment.class.getSimpleName();
 	public static final String TAG_TODO_LISTS = "todo_lists";
+	private static final String TAG_TODO_LIST_FRAGMENT = "todo_list_fragment";
 
 	// member fields
 	private ArrayList<TodoList> mTodoLists;
@@ -89,14 +90,14 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 
 	@Override
 	public void onOpenTodoList(TodoList todoList) {
-		TodoListFragmentOn todoListFragment = new TodoListFragmentOn();
+		TodoListFragment todoListFragment = new TodoListFragment();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(TAG_TODO_LISTS, todoList);
 		todoListFragment.setArguments(bundle);
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
 				.replace(R.id.placeHolder, todoListFragment)
-				.addToBackStack("HELLO")
+				.addToBackStack(TAG_TODO_LIST_FRAGMENT)
 				.commit();
 	}
 }

@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,7 +23,10 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 
 	public interface OnTodoItemListener {
 		void addNewTodoItem();
+
 		void onCompletedChanged(Todo todo);
+
+		void onDescriptionChanged(Todo todo);
 	}
 
 	private static final int LAST_ITEM = 1;
@@ -35,13 +40,9 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 		mListener = listener;
 	}
 
-	public void updateTodos(ArrayList<Todo> todos) {
-		mTodos = todos;
-	}
-
 	@Override
 	public int getItemViewType(int position) {
-		if (position == getItemCount()-1) {
+		if (position == getItemCount() - 1) {
 			return LAST_ITEM;
 		} else if (position >= 0 && position < getItemCount()) {
 			return TODO_ITEM;
@@ -78,28 +79,74 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 	}
 
 	private class ViewHolder extends RecyclerView.ViewHolder {
-		private TextView mTodoLabel;
-		private CheckBox mCompletedBox;
+		private LinearLayout mTodoLayout, mTodoEditLayout;
+		private CheckBox mTodoItemBox;
+		private EditText mTodoEdit;
+		private TextView mTodoButton;
 		private Todo mTodo;
 
 		public ViewHolder(View view) {
 			super(view);
-			mTodoLabel = (TextView) view.findViewById(R.id.todoLabel);
-			mCompletedBox = (CheckBox) view.findViewById(R.id.completedBox);
-			mCompletedBox.setOnCheckedChangeListener(mCheckedChangeListener);
+			mTodoLayout = (LinearLayout) view.findViewById(R.id.todoItemLayout);
+			mTodoEditLayout = (LinearLayout) view.findViewById(R.id.editTodoItemLayout);
+			mTodoItemBox = (CheckBox) view.findViewById(R.id.todoItemBox);
+			mTodoItemBox.setOnCheckedChangeListener(mCheckedChangeListener);
+			mTodoEdit = (EditText) view.findViewById(R.id.todoEdit);
+			mTodoEdit.setOnFocusChangeListener(mOnFocusChangeListener);
+			mTodoButton = (TextView) view.findViewById(R.id.editButton);
+			mTodoButton.setOnClickListener(mOnClickListener);
 		}
 
 		public void bindView(Todo todo) {
 			mTodo = todo;
-			mTodoLabel.setText(todo.getDescription());
-			mCompletedBox.setChecked(todo.isCompleted());
+			if (!todo.getDescription().equals("")) {
+				hideEditor();
+				mTodoItemBox.setText(todo.getDescription());
+				mTodoItemBox.setChecked(todo.isCompleted());
+			} else {
+				showEditor();
+			}
 		}
 
+		private void showEditor() {
+			mTodoLayout.setVisibility(View.GONE);
+			mTodoEditLayout.setVisibility(View.VISIBLE);
+		}
+
+		private void hideEditor() {
+			mTodoLayout.setVisibility(View.VISIBLE);
+			mTodoEditLayout.setVisibility(View.GONE);
+		}
+
+		private void saveDescription() {
+			String description = mTodoEdit.getText().toString();
+			mTodo.setDescription(description);
+			mTodoItemBox.setText(description);
+			hideEditor();
+		}
+
+		// listeners
 		CompoundButton.OnCheckedChangeListener mCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 				mTodo.setCompleted(isChecked);
 				mListener.onCompletedChanged(mTodo);
+			}
+		};
+
+		View.OnFocusChangeListener mOnFocusChangeListener = new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View view, boolean hasFocus) {
+				if (!hasFocus) {
+					saveDescription();
+				}
+			}
+		};
+
+		View.OnClickListener mOnClickListener = new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				saveDescription();
 			}
 		};
 	}

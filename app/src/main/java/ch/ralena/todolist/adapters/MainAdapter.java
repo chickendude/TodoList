@@ -120,6 +120,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 		View.OnClickListener onClickListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				// this gets passed to MainFragment
 				mClickedListener.onOpenTodoList(mTodoList);
 			}
 		};
