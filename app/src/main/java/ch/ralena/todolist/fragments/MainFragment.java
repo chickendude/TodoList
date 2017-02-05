@@ -6,13 +6,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import ch.ralena.todolist.MainActivity;
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.MainAdapter;
 import ch.ralena.todolist.objects.Todo;
@@ -47,6 +47,9 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+		// show FAB
+		((MainActivity)getContext()).showFab();
+
 		// set up RecyclerView and adapter
 		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 		mAdapter = new MainAdapter(mTodoLists, this, this);
@@ -57,6 +60,8 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 
 		return view;
 	}
+
+
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -86,16 +91,29 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 	}
 
 	@Override
-	public void onCompletionStatusChanged(TodoList todoList) {
+	public void onCompletionStatusChanged(final TodoList todoList) {
+		// make sure todoitems match todolist
+		for (Todo todo : todoList.getTodoItems()) {
+			todo.setCompleted(todoList.isCompleted());
+		}
+		// save changes in database
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				for (Todo todo : todoList.getTodoItems()) {
+					todo.setCompleted(todoList.isCompleted());
+					mSqlManager.updateTodoItemCompleted(todo);
+				}
+				mSqlManager.updateTodoListCompleted(todoList);
+			}
+		});
 		mSqlManager.updateTodoListCompleted(todoList);
 	}
 
 	@Override
 	public void onOpenTodoList(TodoList todoList) {
-
-		for (Todo todo : todoList.getTodoItems()) {
-			Log.d(TAG, todo.getDescription());
-		}
+		// hide FAB
+		((MainActivity)getContext()).hideFab();
 
 		TodoListFragment todoListFragment = new TodoListFragment();
 		Bundle bundle = new Bundle();

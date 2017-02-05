@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -65,8 +64,7 @@ public class SqlManager {
 		cursor.close();
 
 
-
-		database.close();
+//		database.close();
 		return todoLists;
 	}
 
@@ -77,11 +75,11 @@ public class SqlManager {
 						" WHERE " + SqlHelper.COL_TODOITEM_FOREIGN_KEY_TODOLIST + " = " + id, null);
 		if (itemCursor.moveToFirst()) {
 			do {
-			long todoId = getLong(itemCursor, BaseColumns._ID);
-			boolean isCompleted = getInt(itemCursor, SqlHelper.COL_TODOITEM_COMPLETED) > 0;
-			String description = getString(itemCursor, SqlHelper.COL_TODOITEM_DESCRIPTION);
-			Todo todo = new Todo(todoId, description, isCompleted);
-			todoList.add(todo);
+				long todoId = getLong(itemCursor, BaseColumns._ID);
+				boolean isCompleted = getInt(itemCursor, SqlHelper.COL_TODOITEM_COMPLETED) > 0;
+				String description = getString(itemCursor, SqlHelper.COL_TODOITEM_DESCRIPTION);
+				Todo todo = new Todo(todoId, description, isCompleted);
+				todoList.add(todo);
 			} while (itemCursor.moveToNext());
 		}
 		itemCursor.close();
@@ -113,7 +111,7 @@ public class SqlManager {
 
 		database.setTransactionSuccessful();
 		database.endTransaction();
-		database.close();
+//		database.close();
 	}
 
 	// returns id
@@ -128,7 +126,7 @@ public class SqlManager {
 
 		database.setTransactionSuccessful();
 		database.endTransaction();
-		database.close();
+//		database.close();
 
 		return id;
 	}
@@ -137,19 +135,15 @@ public class SqlManager {
 		SQLiteDatabase database = mSqlHelper.getWritableDatabase();
 		database.beginTransaction();
 
-		Log.d(TAG, todo.getDescription());
-
 		ContentValues todoItemValues = new ContentValues();
 		todoItemValues.put(SqlHelper.COL_TODOITEM_DESCRIPTION, todo.getDescription());
 		todoItemValues.put(SqlHelper.COL_TODOITEM_COMPLETED, todo.isCompleted());
 		todoItemValues.put(SqlHelper.COL_TODOITEM_FOREIGN_KEY_TODOLIST, todoListId);
 		long id = database.insert(SqlHelper.TABLE_TODOITEM, null, todoItemValues);
 
-		Log.d(TAG, id + "");
-
 		database.setTransactionSuccessful();
 		database.endTransaction();
-		database.close();
+//		database.close();
 
 		return id;
 	}
@@ -176,6 +170,26 @@ public class SqlManager {
 
 		database.setTransactionSuccessful();
 		database.endTransaction();
-		database.close();
+//		database.close();
 	}
+
+	public void updateTodoItemCompleted(Todo todo) {
+		ContentValues todoItemValues = new ContentValues();
+		todoItemValues.put(SqlHelper.COL_TODOITEM_COMPLETED, todo.isCompleted());
+		updateTodoItem(todo, todoItemValues);
+	}
+
+	private void updateTodoItem(Todo todo, ContentValues todoItemValues) {
+		SQLiteDatabase database = mSqlHelper.getWritableDatabase();
+		database.beginTransaction();
+
+		String whereClause = BaseColumns._ID + "=?";
+		String[] whereArgs = new String[]{String.valueOf(todo.getId())};
+		database.update(SqlHelper.TABLE_TODOITEM, todoItemValues, whereClause, whereArgs);
+
+		database.setTransactionSuccessful();
+		database.endTransaction();
+//		database.close();
+	}
+
 }

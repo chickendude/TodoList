@@ -1,7 +1,6 @@
 package ch.ralena.todolist.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,9 +24,7 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 	private static final String TAG = TodoListAdapater.class.getSimpleName();
 	public interface OnTodoItemListener {
 		void addNewTodoItem();
-
 		void onCompletedChanged(Todo todo);
-
 		void onDescriptionSet(Todo todo);
 	}
 
@@ -80,8 +78,10 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 	}
 
 	private class ViewHolder extends RecyclerView.ViewHolder {
-		private LinearLayout mTodoLayout, mTodoEditLayout;
+		private RelativeLayout mTodoLayout;
+		private LinearLayout mTodoEditLayout;
 		private CheckBox mTodoItemBox;
+		private TextView mTodoItemLabel;
 		private EditText mTodoEdit;
 		private TextView mTodoButton;
 		private Todo mTodo;
@@ -89,24 +89,25 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 
 		public ViewHolder(View view) {
 			super(view);
-			mTodoLayout = (LinearLayout) view.findViewById(R.id.todoItemLayout);
+			mTodo = null;
+			mTodoLayout = (RelativeLayout) view.findViewById(R.id.todoItemLayout);
 			mTodoEditLayout = (LinearLayout) view.findViewById(R.id.editTodoItemLayout);
 			mTodoItemBox = (CheckBox) view.findViewById(R.id.todoItemBox);
 			mTodoItemBox.setOnCheckedChangeListener(mCheckedChangeListener);
+			mTodoItemLabel = (TextView) view.findViewById(R.id.todoItemLabel);
 			mTodoEdit = (EditText) view.findViewById(R.id.todoEdit);
 			mTodoEdit.setOnFocusChangeListener(mOnFocusChangeListener);
 			mTodoButton = (TextView) view.findViewById(R.id.editButton);
 			mTodoButton.setOnClickListener(mOnClickListener);
 		}
 
-		public void bindView(Todo todo) {
+		public void bindView(final Todo todo) {
 			mTodo = todo;
-			Log.d(TAG, "Description: " + todo.getDescription());
-			if (!todo.getDescription().equals("")) {
+			if (!mTodo.getDescription().equals("")) {
 				mIsSaved = true;
+				mTodoItemLabel.setText(mTodo.getDescription());
+				mTodoItemBox.setChecked(mTodo.isCompleted());
 				hideEditor();
-				mTodoItemBox.setText(todo.getDescription());
-				mTodoItemBox.setChecked(todo.isCompleted());
 			} else {
 				mIsSaved = false;
 				showEditor();

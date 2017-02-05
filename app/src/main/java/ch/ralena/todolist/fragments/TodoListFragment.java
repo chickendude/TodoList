@@ -43,10 +43,6 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 		// pull our todolist from the parcelables
 		mTodoList = getArguments().getParcelable(MainFragment.TAG_TODO_LISTS);
 
-		for (Todo todo : mTodoList.getTodoItems()) {
-			Log.d(TAG, "Description: " + todo.getDescription());
-		}
-
 		// inflate views
 		View view = inflater.inflate(R.layout.fragment_todolist, container, false);
 		mTitleBox = (CheckBox) view.findViewById(R.id.titleBox);
@@ -69,9 +65,10 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 	}
 
 	@Override
-	public void onCompletedChanged(Todo todo) {
+	public void onCompletedChanged(final Todo todo) {
 		if (!todo.isCompleted()) {
 			mTitleBox.setChecked(false);
+			mTodoList.setCompleted(false);
 		} else {
 			boolean allChecked = true;
 			for (Todo todoItem : mTodoList.getTodoItems()) {
@@ -80,13 +77,20 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 				}
 			}
 			mTitleBox.setChecked(allChecked);
+			mTodoList.setCompleted(allChecked);
 		}
+
+		new Thread(new Runnable() {
+			public void run() {
+				mSqlManager.updateTodoListCompleted(mTodoList);
+				mSqlManager.updateTodoItemCompleted(todo);
+			}
+		}).start();
 	}
 
 	@Override
 	public void onDescriptionSet(Todo todo) {
-		Log.d(TAG, mTodoList.getId() + " " + todo.getDescription());
-		mSqlManager.createTodoListItem(todo, mTodoList.getId());
+		todo.setId(mSqlManager.createTodoListItem(todo, mTodoList.getId()));
 	}
 
 	@Override

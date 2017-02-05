@@ -1,6 +1,7 @@
 package ch.ralena.todolist;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -21,10 +22,14 @@ public class MainActivity extends AppCompatActivity implements NewTodoListFragme
 	private static final String TAG_NEW_TODO_LIST = "new_todo_list";
 	private MainFragment mMainFragment;
 
+	private FloatingActionButton mFAB;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		mFAB = (FloatingActionButton) findViewById(R.id.fab);
 
 		// Load main fragment
 		FragmentManager fragmentManager = getSupportFragmentManager();
@@ -44,23 +49,31 @@ public class MainActivity extends AppCompatActivity implements NewTodoListFragme
 	}
 
 	public void onFabClick(View view) {
-		animateFab(view, View.INVISIBLE);
+		hideFab();
 		NewTodoListFragment newTodoListFragment = new NewTodoListFragment();
 		newTodoListFragment.setStyle(DialogFragment.STYLE_NO_FRAME, 0);
 		newTodoListFragment.show(getSupportFragmentManager(), TAG_NEW_TODO_LIST);
 	}
 
-	private void animateFab(View view, int visibility) {
+	private void animateFab(int visibility) {
 		Transition fab = new Scale();
-		fab.addTarget(view);
+		fab.addTarget(mFAB);
 		ViewGroup viewGroup = (ViewGroup) findViewById(R.id.placeHolder);
 		TransitionManager.beginDelayedTransition(viewGroup, fab);
-		view.setVisibility(visibility);
+		mFAB.setVisibility(visibility);
 	}
 
 	@Override
 	public void onCancelNewTodoList() {
-		animateFab(findViewById(R.id.fab), View.VISIBLE);
+		showFab();
+	}
+
+	public void hideFab() {
+		animateFab(View.INVISIBLE);
+	}
+
+	public void showFab() {
+		animateFab(View.VISIBLE);
 	}
 
 	@Override
