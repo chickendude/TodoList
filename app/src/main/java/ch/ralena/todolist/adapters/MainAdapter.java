@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ch.ralena.todolist.R;
+import ch.ralena.todolist.objects.Todo;
 import ch.ralena.todolist.objects.TodoList;
 
 /**
@@ -77,6 +78,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 
 	private class ViewHolder extends RecyclerView.ViewHolder {
 		TextView mTitleLabel;
+		TextView mCompletedLabel;
 		EditText mTitleEdit;
 		TodoList mTodoList;
 		CheckBox mCompletedCheckBox;
@@ -85,6 +87,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 			super(view);
 			mTodoList = null;
 			mTitleLabel = (TextView) view.findViewById(R.id.titleLabel);
+			mCompletedLabel = (TextView) view.findViewById(R.id.completedLabel);
 			mTitleLabel.setOnClickListener(onClickListener);
 			mTitleLabel.setOnLongClickListener(longClickListener);
 			mCompletedCheckBox = (CheckBox) view.findViewById(R.id.completedButton);
@@ -105,6 +108,17 @@ public class MainAdapter extends RecyclerView.Adapter {
 
 		public void bindView(final TodoList todoList) {
 			mTodoList = todoList;
+			String completedRation = "";
+			if (todoList.getTodoItems().size() > 0) {
+				int numCompleted = 0;
+				for (Todo todo : todoList.getTodoItems()) {
+					if (todo.isCompleted()) {
+						numCompleted++;
+					}
+				}
+				completedRation = String.format("%d/%d", numCompleted, todoList.getTodoItems().size());
+			}
+			mCompletedLabel.setText(completedRation);
 			mCompletedCheckBox.setChecked(mTodoList.isCompleted());
 			hideEditor();
 		}

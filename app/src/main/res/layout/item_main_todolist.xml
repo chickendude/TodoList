@@ -13,7 +13,7 @@
 		android:id="@+id/titleLabel"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_toLeftOf="@+id/completedButton"
+		android:layout_toLeftOf="@+id/completedLabel"
 		android:clickable="true"
 		android:focusable="true"
 		android:textSize="26sp"
@@ -23,7 +23,7 @@
 		android:id="@+id/titleEdit"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_toLeftOf="@+id/completedButton"
+		android:layout_toLeftOf="@+id/completedLabel"
 		android:imeActionId="@+id/titleEditReturn"
 		android:imeActionLabel="Edit"
 		android:inputType="text"
@@ -31,10 +31,21 @@
 		android:visibility="gone"
 		tools:text="Title of Todo List"/>
 
+	<TextView
+		android:id="@+id/completedLabel"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:layout_toLeftOf="@+id/completedButton"
+		android:focusable="true"
+		android:textSize="15sp"
+		tools:text="2/3"/>
+
 	<CheckBox
 		android:id="@+id/completedButton"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignParentEnd="true"/>
+		android:layout_alignParentEnd="true"
+		android:layout_centerInParent="true"/>
 
 </RelativeLayout>

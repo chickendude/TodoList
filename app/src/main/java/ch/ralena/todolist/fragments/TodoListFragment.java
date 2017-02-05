@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.CheckBox;
 
 import java.util.ArrayList;
 
+import ch.ralena.todolist.MainActivity;
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.TodoListAdapater;
 import ch.ralena.todolist.objects.Todo;
@@ -39,6 +39,8 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		mSqlManager = new SqlManager(getContext());
+
+		((MainActivity)getContext()).hideFab();
 
 		// pull our todolist from the parcelables
 		mTodoList = getArguments().getParcelable(MainFragment.TAG_TODO_LISTS);

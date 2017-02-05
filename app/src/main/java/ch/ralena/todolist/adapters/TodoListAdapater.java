@@ -129,7 +129,7 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 				mIsSaved = true;
 				String description = mTodoEdit.getText().toString();
 				mTodo.setDescription(description);
-				mTodoItemBox.setText(description);
+				mTodoItemLabel.setText(description);
 				hideEditor();
 				mListener.onDescriptionSet(mTodo);
 			}
