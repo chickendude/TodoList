@@ -25,6 +25,7 @@ import ch.ralena.todolist.sql.SqlManager;
 
 public class TodoListFragment extends Fragment implements TodoListAdapater.OnTodoItemListener,
 		View.OnClickListener {
+	private static final String TAG = TodoListFragment.class.getSimpleName();
 	TodoList mTodoList;
 	private SqlManager mSqlManager;
 
@@ -41,7 +42,11 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 
 		// pull our todolist from the parcelables
 		mTodoList = getArguments().getParcelable(MainFragment.TAG_TODO_LISTS);
-		Log.d("TAG", mTodoList.getTodoItems().size() + "");
+
+		for (Todo todo : mTodoList.getTodoItems()) {
+			Log.d(TAG, "Description: " + todo.getDescription());
+		}
+
 		// inflate views
 		View view = inflater.inflate(R.layout.fragment_todolist, container, false);
 		mTitleBox = (CheckBox) view.findViewById(R.id.titleBox);
@@ -79,7 +84,8 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 	}
 
 	@Override
-	public void onDescriptionChanged(Todo todo) {
+	public void onDescriptionSet(Todo todo) {
+		Log.d(TAG, mTodoList.getId() + " " + todo.getDescription());
 		mSqlManager.createTodoListItem(todo, mTodoList.getId());
 	}
 

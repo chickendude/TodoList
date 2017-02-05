@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.MainAdapter;
+import ch.ralena.todolist.objects.Todo;
 import ch.ralena.todolist.objects.TodoList;
 import ch.ralena.todolist.sql.SqlManager;
 
@@ -90,6 +92,11 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 
 	@Override
 	public void onOpenTodoList(TodoList todoList) {
+
+		for (Todo todo : todoList.getTodoItems()) {
+			Log.d(TAG, todo.getDescription());
+		}
+
 		TodoListFragment todoListFragment = new TodoListFragment();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(TAG_TODO_LISTS, todoList);

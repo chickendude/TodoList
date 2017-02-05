@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ import ch.ralena.todolist.objects.TodoList;
 		database.close();
  */
 public class SqlManager {
+	private static final String TAG = SqlManager.class.getSimpleName();
 	SqlHelper mSqlHelper;
 
 	public SqlManager(Context context) {
@@ -74,11 +76,13 @@ public class SqlManager {
 				"SELECT * FROM " + SqlHelper.TABLE_TODOITEM +
 						" WHERE " + SqlHelper.COL_TODOITEM_FOREIGN_KEY_TODOLIST + " = " + id, null);
 		if (itemCursor.moveToFirst()) {
+			do {
 			long todoId = getLong(itemCursor, BaseColumns._ID);
 			boolean isCompleted = getInt(itemCursor, SqlHelper.COL_TODOITEM_COMPLETED) > 0;
 			String description = getString(itemCursor, SqlHelper.COL_TODOITEM_DESCRIPTION);
 			Todo todo = new Todo(todoId, description, isCompleted);
 			todoList.add(todo);
+			} while (itemCursor.moveToNext());
 		}
 		itemCursor.close();
 		return todoList;
@@ -133,11 +137,15 @@ public class SqlManager {
 		SQLiteDatabase database = mSqlHelper.getWritableDatabase();
 		database.beginTransaction();
 
+		Log.d(TAG, todo.getDescription());
+
 		ContentValues todoItemValues = new ContentValues();
 		todoItemValues.put(SqlHelper.COL_TODOITEM_DESCRIPTION, todo.getDescription());
 		todoItemValues.put(SqlHelper.COL_TODOITEM_COMPLETED, todo.isCompleted());
 		todoItemValues.put(SqlHelper.COL_TODOITEM_FOREIGN_KEY_TODOLIST, todoListId);
 		long id = database.insert(SqlHelper.TABLE_TODOITEM, null, todoItemValues);
+
+		Log.d(TAG, id + "");
 
 		database.setTransactionSuccessful();
 		database.endTransaction();

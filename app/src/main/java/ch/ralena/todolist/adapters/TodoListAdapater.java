@@ -1,6 +1,7 @@
 package ch.ralena.todolist.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +21,13 @@ import ch.ralena.todolist.objects.Todo;
  */
 
 public class TodoListAdapater extends RecyclerView.Adapter {
-
+	private static final String TAG = TodoListAdapater.class.getSimpleName();
 	public interface OnTodoItemListener {
 		void addNewTodoItem();
 
 		void onCompletedChanged(Todo todo);
 
-		void onDescriptionChanged(Todo todo);
+		void onDescriptionSet(Todo todo);
 	}
 
 	private static final int LAST_ITEM = 1;
@@ -84,6 +85,7 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 		private EditText mTodoEdit;
 		private TextView mTodoButton;
 		private Todo mTodo;
+		private boolean mIsSaved;
 
 		public ViewHolder(View view) {
 			super(view);
@@ -99,11 +101,14 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 
 		public void bindView(Todo todo) {
 			mTodo = todo;
+			Log.d(TAG, "Description: " + todo.getDescription());
 			if (!todo.getDescription().equals("")) {
+				mIsSaved = true;
 				hideEditor();
 				mTodoItemBox.setText(todo.getDescription());
 				mTodoItemBox.setChecked(todo.isCompleted());
 			} else {
+				mIsSaved = false;
 				showEditor();
 			}
 		}
@@ -119,10 +124,14 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 		}
 
 		private void saveDescription() {
-			String description = mTodoEdit.getText().toString();
-			mTodo.setDescription(description);
-			mTodoItemBox.setText(description);
-			hideEditor();
+			if(!mIsSaved) {
+				mIsSaved = true;
+				String description = mTodoEdit.getText().toString();
+				mTodo.setDescription(description);
+				mTodoItemBox.setText(description);
+				hideEditor();
+				mListener.onDescriptionSet(mTodo);
+			}
 		}
 
 		// listeners
