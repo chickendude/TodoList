@@ -131,6 +131,10 @@ public class SqlManager {
 		return id;
 	}
 
+	public void closeDb() {
+		mSqlHelper.getWritableDatabase().close();
+	}
+
 	public long createTodoListItem(Todo todo, long todoListId) {
 		SQLiteDatabase database = mSqlHelper.getWritableDatabase();
 		database.beginTransaction();

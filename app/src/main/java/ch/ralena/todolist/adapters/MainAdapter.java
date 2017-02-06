@@ -1,7 +1,6 @@
 package ch.ralena.todolist.adapters;
 
 import android.content.res.Resources;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -12,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 	}
 
 	public interface OnItemClickedListener {
-		void onOpenTodoList(TodoList todoList);
+		void onOpenTodoList(TodoList todoList, View view);
 	}
 
 	List<TodoList> mTodoLists;
@@ -68,7 +68,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 		ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
 		params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, bottomMargin);
 		// bind the view
-		((ViewHolder) holder).bindView(mTodoLists.get(position));
+		((ViewHolder) holder).bindView(mTodoLists.get(position), position);
 	}
 
 	@Override
@@ -106,7 +106,8 @@ public class MainAdapter extends RecyclerView.Adapter {
 			});
 		}
 
-		public void bindView(final TodoList todoList) {
+		public void bindView(final TodoList todoList, int position) {
+			mTitleLabel.setTransitionName("title_label" + position);
 			mTodoList = todoList;
 			String completedRation = "";
 			if (todoList.getTodoItems().size() > 0) {
@@ -135,7 +136,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 			@Override
 			public void onClick(View view) {
 				// this gets passed to MainFragment
-				mClickedListener.onOpenTodoList(mTodoList);
+				mClickedListener.onOpenTodoList(mTodoList, view);
 			}
 		};
 

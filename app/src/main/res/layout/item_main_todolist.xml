@@ -15,6 +15,7 @@
 		android:layout_height="wrap_content"
 		android:layout_toLeftOf="@+id/completedLabel"
 		android:clickable="true"
+		android:transitionName="todoListToItemTransition"
 		android:focusable="true"
 		android:textSize="26sp"
 		tools:text="Title of Todo List"/>

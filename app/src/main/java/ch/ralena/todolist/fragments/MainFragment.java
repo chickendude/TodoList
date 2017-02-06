@@ -1,11 +1,17 @@
 package ch.ralena.todolist.fragments;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.ChangeBounds;
+import android.transition.ChangeTransform;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.TransitionSet;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +33,7 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 	// constants
 	private static final String TAG = MainFragment.class.getSimpleName();
 	public static final String TAG_TODO_LISTS = "todo_lists";
+	public static final String TAG_TRANSITION_NAME = "transition_name";
 	private static final String TAG_TODO_LIST_FRAGMENT = "todo_list_fragment";
 
 	// member fields
@@ -34,11 +41,11 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 	MainAdapter mAdapter;
 	SqlManager mSqlManager;
 
-
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		mSqlManager = new SqlManager(getContext());
+		Log.d(TAG, "oncreateview");
+		mSqlManager = new SqlManager(getActivity());
 		if (savedInstanceState == null) {
 			mTodoLists = mSqlManager.getTodoLists();
 		} else {
@@ -48,7 +55,7 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
 
 		// show FAB
-		((MainActivity)getContext()).showFab();
+		((MainActivity) getActivity()).showFab();
 
 		// set up RecyclerView and adapter
 		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
@@ -60,8 +67,6 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 
 		return view;
 	}
-
-
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -111,17 +116,35 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 	}
 
 	@Override
-	public void onOpenTodoList(TodoList todoList) {
+	public void onOpenTodoList(TodoList todoList, View view) {
 		// hide FAB
-		((MainActivity)getContext()).hideFab();
+		((MainActivity) getActivity()).hideFab();
 
 		TodoListFragment todoListFragment = new TodoListFragment();
+
+		TransitionSet transitionSet = new TransitionSet();
+		transitionSet.setOrdering(TransitionSet.ORDERING_TOGETHER);
+		transitionSet.addTransition(new ChangeBounds());
+		transitionSet.addTransition(new ChangeTransform());
+		todoListFragment.setSharedElementEnterTransition(transitionSet);
+
+		Slide slideTransition = new Slide(Gravity.RIGHT);
+		slideTransition.setDuration(400);
+		todoListFragment.setEnterTransition(new Fade());
+
+		setSharedElementReturnTransition(transitionSet);
+		setExitTransition(new Fade());
+
+		String titleViewTransitionName = view.getTransitionName();
+
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(TAG_TODO_LISTS, todoList);
+		bundle.putString(TAG_TRANSITION_NAME, titleViewTransitionName);
 		todoListFragment.setArguments(bundle);
-		FragmentManager fragmentManager = getFragmentManager();
-		fragmentManager.beginTransaction()
+
+		getFragmentManager().beginTransaction()
 				.replace(R.id.placeHolder, todoListFragment)
+				.addSharedElement(view, view.getTransitionName())
 				.addToBackStack(TAG_TODO_LIST_FRAGMENT)
 				.commit();
 	}

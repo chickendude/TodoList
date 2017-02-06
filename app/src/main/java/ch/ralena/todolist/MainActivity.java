@@ -1,14 +1,15 @@
 package ch.ralena.todolist;
 
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import ch.ralena.todolist.fragments.MainFragment;
 import ch.ralena.todolist.fragments.NewTodoListFragment;
@@ -16,23 +17,25 @@ import ch.ralena.todolist.objects.TodoList;
 import ch.ralena.todolist.transitions.Scale;
 
 // TODO: Check into automatic animations via layout
-public class MainActivity extends AppCompatActivity implements NewTodoListFragment.SubmitNewTodoListListener {
+public class MainActivity extends Activity implements NewTodoListFragment.SubmitNewTodoListListener {
+	private static final String TAG = MainActivity.class.getSimpleName();
 
 	private static final String TAG_MAIN_FRAGMENT = "main_fragment";
 	private static final String TAG_NEW_TODO_LIST = "new_todo_list";
 	private MainFragment mMainFragment;
 
-	private FloatingActionButton mFAB;
+	private static ImageView mFAB;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		mFAB = (FloatingActionButton) findViewById(R.id.fab);
+		mFAB = (ImageView) findViewById(R.id.fab);
+		showFab();
 
 		// Load main fragment
-		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentManager fragmentManager = getFragmentManager();
 
 		// make sure we don't load it multiple times
 		MainFragment savedFragment = (MainFragment) fragmentManager
@@ -52,15 +55,17 @@ public class MainActivity extends AppCompatActivity implements NewTodoListFragme
 		hideFab();
 		NewTodoListFragment newTodoListFragment = new NewTodoListFragment();
 		newTodoListFragment.setStyle(DialogFragment.STYLE_NO_FRAME, 0);
-		newTodoListFragment.show(getSupportFragmentManager(), TAG_NEW_TODO_LIST);
+		newTodoListFragment.show(getFragmentManager(), TAG_NEW_TODO_LIST);
 	}
 
 	private void animateFab(int visibility) {
+		Log.d(TAG, "" + visibility);
 		Transition fab = new Scale();
 		fab.addTarget(mFAB);
 		ViewGroup viewGroup = (ViewGroup) findViewById(R.id.placeHolder);
 		TransitionManager.beginDelayedTransition(viewGroup, fab);
 		mFAB.setVisibility(visibility);
+		Log.d(TAG, "" + mFAB.getVisibility());
 	}
 
 	@Override
@@ -69,10 +74,12 @@ public class MainActivity extends AppCompatActivity implements NewTodoListFragme
 	}
 
 	public void hideFab() {
-		animateFab(View.INVISIBLE);
+		Log.d(TAG, "Hide FAB");
+		animateFab(View.GONE);
 	}
 
 	public void showFab() {
+		Log.d(TAG, "Show FAB");
 		animateFab(View.VISIBLE);
 	}
 
