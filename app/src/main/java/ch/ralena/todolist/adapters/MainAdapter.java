@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -77,6 +78,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 	}
 
 	private class ViewHolder extends RecyclerView.ViewHolder {
+		RelativeLayout mRelativeLayout;
 		TextView mTitleLabel;
 		TextView mCompletedLabel;
 		EditText mTitleEdit;
@@ -86,6 +88,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 		public ViewHolder(View view) {
 			super(view);
 			mTodoList = null;
+			mRelativeLayout = (RelativeLayout) view;
 			mTitleLabel = (TextView) view.findViewById(R.id.titleLabel);
 			mCompletedLabel = (TextView) view.findViewById(R.id.completedLabel);
 			mTitleLabel.setOnClickListener(onClickListener);
@@ -108,6 +111,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 
 		public void bindView(final TodoList todoList, int position) {
 			mTitleLabel.setTransitionName("title_label" + position);
+			mRelativeLayout.setTransitionName("relative_layout" + position);
 			mTodoList = todoList;
 			String completedRation = "";
 			if (todoList.getTodoItems().size() > 0) {

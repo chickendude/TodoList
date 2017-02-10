@@ -6,7 +6,6 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.transition.Transition;
 import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -59,13 +58,11 @@ public class MainActivity extends Activity implements NewTodoListFragment.Submit
 	}
 
 	private void animateFab(int visibility) {
-		Log.d(TAG, "" + visibility);
 		Transition fab = new Scale();
 		fab.addTarget(mFAB);
 		ViewGroup viewGroup = (ViewGroup) findViewById(R.id.placeHolder);
 		TransitionManager.beginDelayedTransition(viewGroup, fab);
 		mFAB.setVisibility(visibility);
-		Log.d(TAG, "" + mFAB.getVisibility());
 	}
 
 	@Override
@@ -74,12 +71,10 @@ public class MainActivity extends Activity implements NewTodoListFragment.Submit
 	}
 
 	public void hideFab() {
-		Log.d(TAG, "Hide FAB");
 		animateFab(View.GONE);
 	}
 
 	public void showFab() {
-		Log.d(TAG, "Show FAB");
 		animateFab(View.VISIBLE);
 	}
 

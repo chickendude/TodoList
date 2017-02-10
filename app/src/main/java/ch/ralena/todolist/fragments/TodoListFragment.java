@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,9 +44,13 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 		mTodoList = getArguments().getParcelable(MainFragment.TAG_TODO_LISTS);
 
 		String transitionName = getArguments().getString(MainFragment.TAG_TRANSITION_NAME);
+		String relativeLayoutTransitionName = getArguments().getString(MainFragment.TAG_TRANSITION_RELATIVELAYOUT);
+		Log.d(TAG, relativeLayoutTransitionName);
 
 		// inflate views
 		View view = inflater.inflate(R.layout.fragment_todolist, container, false);
+		view.setTransitionName(relativeLayoutTransitionName);
+
 		mTitleBox = (CheckBox) view.findViewById(R.id.titleBox);
 		mTitleBox.setOnClickListener(this);
 		mTitleBox.setText(mTodoList.getTitle());

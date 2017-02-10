@@ -6,15 +6,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.ChangeBounds;
+import android.transition.ChangeClipBounds;
 import android.transition.ChangeTransform;
 import android.transition.Fade;
-import android.transition.Slide;
 import android.transition.TransitionSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
@@ -34,6 +34,7 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 	private static final String TAG = MainFragment.class.getSimpleName();
 	public static final String TAG_TODO_LISTS = "todo_lists";
 	public static final String TAG_TRANSITION_NAME = "transition_name";
+	public static final String TAG_TRANSITION_RELATIVELAYOUT = "transition_relative_layout";
 	private static final String TAG_TODO_LIST_FRAGMENT = "todo_list_fragment";
 
 	// member fields
@@ -44,7 +45,6 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		Log.d(TAG, "oncreateview");
 		mSqlManager = new SqlManager(getActivity());
 		if (savedInstanceState == null) {
 			mTodoLists = mSqlManager.getTodoLists();
@@ -120,31 +120,43 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 		// hide FAB
 		((MainActivity) getActivity()).hideFab();
 
+		// get parent relative layout
+		RelativeLayout relativeLayout = (RelativeLayout) view.getParent();
+
 		TodoListFragment todoListFragment = new TodoListFragment();
 
+		// create transition set for shared elements
 		TransitionSet transitionSet = new TransitionSet();
 		transitionSet.setOrdering(TransitionSet.ORDERING_TOGETHER);
 		transitionSet.addTransition(new ChangeBounds());
 		transitionSet.addTransition(new ChangeTransform());
+		transitionSet.addTransition(new ChangeClipBounds());
+
+		// add transition set to new fragment and current fragment
 		todoListFragment.setSharedElementEnterTransition(transitionSet);
+		setSharedElementReturnTransition(transitionSet.setDuration(2400));
 
-		Slide slideTransition = new Slide(Gravity.RIGHT);
-		slideTransition.setDuration(400);
+		// create other transitions
 		todoListFragment.setEnterTransition(new Fade());
+		todoListFragment.setReturnTransition(new Fade());
 
-		setSharedElementReturnTransition(transitionSet);
-		setExitTransition(new Fade());
+		setExitTransition(new Fade().setDuration(2400));
+		setReenterTransition(null);
 
 		String titleViewTransitionName = view.getTransitionName();
+		String relativeLayoutTransitionName = ((RelativeLayout)view.getParent()).getTransitionName();
+		Log.d(TAG, relativeLayoutTransitionName);
 
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(TAG_TODO_LISTS, todoList);
 		bundle.putString(TAG_TRANSITION_NAME, titleViewTransitionName);
+		bundle.putString(TAG_TRANSITION_RELATIVELAYOUT, relativeLayoutTransitionName);
 		todoListFragment.setArguments(bundle);
 
 		getFragmentManager().beginTransaction()
 				.replace(R.id.placeHolder, todoListFragment)
-				.addSharedElement(view, view.getTransitionName())
+				.addSharedElement(view, titleViewTransitionName)
+				.addSharedElement(relativeLayout, relativeLayoutTransitionName)
 				.addToBackStack(TAG_TODO_LIST_FRAGMENT)
 				.commit();
 	}
