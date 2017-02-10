@@ -1,23 +1,30 @@
 package ch.ralena.todolist.adapters;
 
 import android.content.res.Resources;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import ch.ralena.todolist.R;
+import ch.ralena.todolist.fragments.MainFragment;
+import ch.ralena.todolist.itemhelper.ItemDragListener;
+import ch.ralena.todolist.itemhelper.ItemTouchHelperListener;
 import ch.ralena.todolist.objects.Todo;
 import ch.ralena.todolist.objects.TodoList;
 
@@ -26,8 +33,23 @@ import ch.ralena.todolist.objects.TodoList;
  */
 
 // TODO: Convert the checkbox into a button when we are in edit mode
-public class MainAdapter extends RecyclerView.Adapter {
+public class MainAdapter extends RecyclerView.Adapter implements ItemTouchHelperListener {
 	public static final String TAG = MainAdapter.class.getSimpleName();
+
+	@Override
+	public void onItemMove(int fromPosition, int toPosition) {
+		if (fromPosition < toPosition) {
+			for (int i = fromPosition; i < toPosition; i++) {
+				Collections.swap(mTodoLists, i, i + 1);
+			}
+		} else {
+			for (int i = fromPosition; i > toPosition; i--) {
+				Collections.swap(mTodoLists, i, i - 1);
+			}
+		}
+		notifyItemMoved(fromPosition, toPosition);
+	}
+
 	// public interfaces
 	public interface OnDataChangedListener {
 		void onDeleteClicked(TodoList todoList);
@@ -42,11 +64,13 @@ public class MainAdapter extends RecyclerView.Adapter {
 	List<TodoList> mTodoLists;
 	OnDataChangedListener mDataListener;
 	OnItemClickedListener mClickedListener;
+	ItemDragListener mItemDragListener;
 
-	public MainAdapter(List<TodoList> todoLists, OnDataChangedListener dataListener, OnItemClickedListener clickedListener) {
+	public MainAdapter(List<TodoList> todoLists, MainFragment context) {
 		mTodoLists = todoLists;
-		mDataListener = dataListener;
-		mClickedListener = clickedListener;
+		mItemDragListener = (ItemDragListener) context;
+		mDataListener = (OnDataChangedListener) context;
+		mClickedListener = (OnItemClickedListener) context;
 	}
 
 	public void updateTodoList(List<TodoList> todoLists) {
@@ -60,7 +84,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 	}
 
 	@Override
-	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+	public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 		// give a margin to last item, otherwise FAB will cover up the checkbox
 		int bottomMargin = 0;
 		if (position + 1 == getItemCount()) {
@@ -70,6 +94,16 @@ public class MainAdapter extends RecyclerView.Adapter {
 		params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, bottomMargin);
 		// bind the view
 		((ViewHolder) holder).bindView(mTodoLists.get(position), position);
+		((ViewHolder) holder).dragImage.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View view, MotionEvent motionEvent) {
+				if (MotionEventCompat.getActionMasked(motionEvent) ==
+						MotionEvent.ACTION_DOWN) {
+					mItemDragListener.onStartDrag(holder);
+				}
+				return false;
+			}
+		});
 	}
 
 	@Override
@@ -84,6 +118,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 		EditText mTitleEdit;
 		TodoList mTodoList;
 		CheckBox mCompletedCheckBox;
+		public ImageView dragImage;
 
 		public ViewHolder(View view) {
 			super(view);
@@ -107,6 +142,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 					return handled;
 				}
 			});
+			dragImage = (ImageView) view.findViewById(R.id.dragImage);
 		}
 
 		public void bindView(final TodoList todoList, int position) {

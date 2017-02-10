@@ -3,29 +3,42 @@
 				xmlns:app="http://schemas.android.com/apk/res-auto"
 				xmlns:tools="http://schemas.android.com/tools"
 				android:layout_width="match_parent"
-				android:elevation="3dp"
 				android:layout_height="wrap_content"
 				android:layout_margin="10dp"
 				android:background="@drawable/todolist_background"
+				android:elevation="3dp"
 				android:orientation="vertical"
 				android:padding="10dp">
+
+	<ImageView
+		android:id="@+id/dragImage"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical|left"
+		android:scaleType="center"
+		android:src="@drawable/ic_drag"/>
 
 	<TextView
 		android:id="@+id/titleLabel"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical"
+		android:textAlignment="center"
 		android:layout_toLeftOf="@+id/completedLabel"
+		android:layout_toRightOf="@id/dragImage"
 		android:clickable="true"
-		android:transitionName="todoListToItemTransition"
 		android:focusable="true"
 		android:textSize="26sp"
+		android:transitionName="todoListToItemTransition"
 		tools:text="Title of Todo List"/>
 
 	<EditText
 		android:id="@+id/titleEdit"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical"
 		android:layout_toLeftOf="@+id/completedLabel"
+		android:layout_toRightOf="@id/dragImage"
 		android:imeActionId="@+id/titleEditReturn"
 		android:imeActionLabel="Edit"
 		android:inputType="text"

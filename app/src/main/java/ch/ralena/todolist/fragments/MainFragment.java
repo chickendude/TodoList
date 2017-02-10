@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.transition.ChangeBounds;
 import android.transition.ChangeClipBounds;
 import android.transition.ChangeTransform;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import ch.ralena.todolist.MainActivity;
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.MainAdapter;
+import ch.ralena.todolist.itemhelper.ItemDragListener;
 import ch.ralena.todolist.objects.Todo;
 import ch.ralena.todolist.objects.TodoList;
 import ch.ralena.todolist.sql.SqlManager;
@@ -29,13 +31,16 @@ import ch.ralena.todolist.sql.SqlManager;
  * Created by crater-windoze on 12/20/2016.
  */
 
-public class MainFragment extends Fragment implements MainAdapter.OnDataChangedListener, MainAdapter.OnItemClickedListener {
+public class MainFragment extends Fragment implements MainAdapter.OnDataChangedListener, MainAdapter.OnItemClickedListener, ItemDragListener {
 	// constants
 	private static final String TAG = MainFragment.class.getSimpleName();
 	public static final String TAG_TODO_LISTS = "todo_lists";
 	public static final String TAG_TRANSITION_NAME = "transition_name";
 	public static final String TAG_TRANSITION_RELATIVELAYOUT = "transition_relative_layout";
 	private static final String TAG_TODO_LIST_FRAGMENT = "todo_list_fragment";
+
+	// ItemTouch stuff
+	ItemTouchHelper mItemTouchHelper;
 
 	// member fields
 	private ArrayList<TodoList> mTodoLists;
@@ -59,11 +64,39 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 
 		// set up RecyclerView and adapter
 		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-		mAdapter = new MainAdapter(mTodoLists, this, this);
+		mAdapter = new MainAdapter(mTodoLists, this);
 		recyclerView.setAdapter(mAdapter);
 		// prepare LayoutManager
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 		recyclerView.setLayoutManager(layoutManager);
+
+		// set up itemtouchhelper callback
+		ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
+			@Override
+			public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+				int mFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+				int sFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+				return makeMovementFlags(mFlags, sFlags);
+			}
+
+			@Override
+			public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+				mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+				return true;
+			}
+
+			@Override
+			public boolean isLongPressDragEnabled() {
+				return false;
+			}
+
+			@Override
+			public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+			}
+		};
+		mItemTouchHelper = new ItemTouchHelper(callback);
+		mItemTouchHelper.attachToRecyclerView(recyclerView);
 
 		return view;
 	}
@@ -159,5 +192,10 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 				.addSharedElement(relativeLayout, relativeLayoutTransitionName)
 				.addToBackStack(TAG_TODO_LIST_FRAGMENT)
 				.commit();
+	}
+
+	@Override
+	public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+		mItemTouchHelper.startDrag(viewHolder);
 	}
 }
