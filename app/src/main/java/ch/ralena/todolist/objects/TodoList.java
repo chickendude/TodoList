@@ -14,17 +14,19 @@ public class TodoList implements Parcelable {
 	private String mTitle;
 	private ArrayList<Todo> mTodoList;
 	private boolean mIsCompleted;
+	private int mPosition;
 
 	public TodoList(String title) {
 		mTitle = title;
 		mTodoList = new ArrayList<>();
 	}
 
-	public TodoList(long id, String title, boolean isCompleted) {
+	public TodoList(long id, String title, boolean isCompleted, int position) {
 		mId = id;
 		mTitle = title;
 		mTodoList = new ArrayList<>();
 		mIsCompleted = isCompleted;
+		mPosition = position;
 	}
 
 	protected TodoList(Parcel in) {
@@ -83,6 +85,14 @@ public class TodoList implements Parcelable {
 
 	public void setCompleted(boolean completed) {
 		mIsCompleted = completed;
+	}
+
+	public int getPosition() {
+		return mPosition;
+	}
+
+	public void setPosition(int position) {
+		mPosition = position;
 	}
 
 	@Override

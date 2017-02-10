@@ -40,22 +40,24 @@ public class SqlManager {
 		String title_col = SqlHelper.COL_TODOLIST_TITLE;
 		String is_completed_col = SqlHelper.COL_TODOLIST_COMPLETED;
 		String id_col = BaseColumns._ID;
+		String position_col = SqlHelper.COL_TODOLIST_POSITION;
 
 		Cursor cursor = database.query(
 				SqlHelper.TABLE_TODOLIST,
-				new String[]{title_col, is_completed_col, id_col},
+				new String[]{title_col, is_completed_col, id_col, position_col},
 				null,
 				null,
 				null,
 				null,
-				null);
+				position_col + " ASC");
 
 		if (cursor.moveToFirst()) {
 			do {
 				long id = getLong(cursor, id_col);
+				int position = getInt(cursor, position_col);
 				boolean isCompleted = getInt(cursor, is_completed_col) > 0;
 				String title = getString(cursor, title_col);
-				TodoList todoList = new TodoList(id, title, isCompleted);
+				TodoList todoList = new TodoList(id, title, isCompleted, position);
 				todoList.setTodoList(getTodoItems(database, id));
 				todoLists.add(todoList);
 			} while (cursor.moveToNext());
@@ -122,6 +124,7 @@ public class SqlManager {
 		ContentValues todoListValues = new ContentValues();
 		todoListValues.put(SqlHelper.COL_TODOLIST_TITLE, todoList.getTitle());
 		todoListValues.put(SqlHelper.COL_TODOLIST_COMPLETED, todoList.isCompleted());
+		todoListValues.put(SqlHelper.COL_TODOLIST_POSITION, todoList.getPosition());
 		long id = database.insert(SqlHelper.TABLE_TODOLIST, null, todoListValues);
 
 		database.setTransactionSuccessful();
@@ -161,6 +164,12 @@ public class SqlManager {
 	public void updateTodoListCompleted(TodoList todoList) {
 		ContentValues todoListValues = new ContentValues();
 		todoListValues.put(SqlHelper.COL_TODOLIST_COMPLETED, todoList.isCompleted());
+		updateTodoList(todoList, todoListValues);
+	}
+
+	public void updateTodoListPosition(TodoList todoList) {
+		ContentValues todoListValues = new ContentValues();
+		todoListValues.put(SqlHelper.COL_TODOLIST_POSITION, todoList.getPosition());
 		updateTodoList(todoList, todoListValues);
 	}
 

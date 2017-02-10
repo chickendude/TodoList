@@ -36,25 +36,12 @@ import ch.ralena.todolist.objects.TodoList;
 public class MainAdapter extends RecyclerView.Adapter implements ItemTouchHelperListener {
 	public static final String TAG = MainAdapter.class.getSimpleName();
 
-	@Override
-	public void onItemMove(int fromPosition, int toPosition) {
-		if (fromPosition < toPosition) {
-			for (int i = fromPosition; i < toPosition; i++) {
-				Collections.swap(mTodoLists, i, i + 1);
-			}
-		} else {
-			for (int i = fromPosition; i > toPosition; i--) {
-				Collections.swap(mTodoLists, i, i - 1);
-			}
-		}
-		notifyItemMoved(fromPosition, toPosition);
-	}
-
 	// public interfaces
 	public interface OnDataChangedListener {
 		void onDeleteClicked(TodoList todoList);
 		void onTitleEdited(TodoList todoList);
 		void onCompletionStatusChanged(TodoList todoList);
+		void onPositionChanged(TodoList todoList);
 	}
 
 	public interface OnItemClickedListener {
@@ -236,5 +223,28 @@ public class MainAdapter extends RecyclerView.Adapter implements ItemTouchHelper
 			mDataListener.onTitleEdited(mTodoList);
 			hideEditor();
 		}
+	}
+
+
+	@Override
+	public void onItemMove(int fromPosition, int toPosition) {
+		if (fromPosition < toPosition) {
+			for (int i = fromPosition; i < toPosition; i++) {
+				Collections.swap(mTodoLists, i, i + 1);
+			}
+		} else {
+			for (int i = fromPosition; i > toPosition; i--) {
+				Collections.swap(mTodoLists, i, i - 1);
+			}
+		}
+		int tFrom = mTodoLists.get(fromPosition).getPosition();
+		int tTo = mTodoLists.get(toPosition).getPosition();
+		mTodoLists.get(fromPosition).setPosition(tTo);
+		mTodoLists.get(toPosition).setPosition(tFrom);
+		mDataListener.onPositionChanged(mTodoLists.get(fromPosition));
+		mDataListener.onPositionChanged(mTodoLists.get(toPosition));
+		notifyItemMoved(fromPosition, toPosition);
+		notifyItemChanged(toPosition);
+		notifyItemChanged(fromPosition);
 	}
 }

@@ -108,6 +108,8 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 	}
 
 	public void addTodoList(TodoList todoList) {
+		todoList.setPosition(mTodoLists.size());
+		Log.d(TAG, todoList.getPosition() + "");
 		long id = mSqlManager.createTodoList(todoList);
 		todoList.setId(id);
 		mTodoLists.add(todoList);
@@ -146,6 +148,12 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 			}
 		});
 		mSqlManager.updateTodoListCompleted(todoList);
+	}
+
+	@Override
+	public void onPositionChanged(TodoList todoList) {
+		Log.d(TAG, "Position changed - " + todoList.getTitle());
+		mSqlManager.updateTodoListPosition(todoList);
 	}
 
 	@Override
