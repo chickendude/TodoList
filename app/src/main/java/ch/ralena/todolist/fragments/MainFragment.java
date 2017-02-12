@@ -109,7 +109,6 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 
 	public void addTodoList(TodoList todoList) {
 		todoList.setPosition(mTodoLists.size());
-		Log.d(TAG, todoList.getPosition() + "");
 		long id = mSqlManager.createTodoList(todoList);
 		todoList.setId(id);
 		mTodoLists.add(todoList);
@@ -152,14 +151,13 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 
 	@Override
 	public void onPositionChanged(TodoList todoList) {
-		Log.d(TAG, "Position changed - " + todoList.getTitle());
 		mSqlManager.updateTodoListPosition(todoList);
 	}
 
 	@Override
 	public void onOpenTodoList(TodoList todoList, View view) {
 		// hide FAB
-		((MainActivity) getActivity()).hideFab();
+//		((MainActivity) getActivity()).hideFab();
 
 		// get parent relative layout
 		RelativeLayout relativeLayout = (RelativeLayout) view.getParent();
@@ -175,13 +173,14 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 
 		// add transition set to new fragment and current fragment
 		todoListFragment.setSharedElementEnterTransition(transitionSet);
-		setSharedElementReturnTransition(transitionSet.setDuration(2400));
+		setSharedElementReturnTransition(transitionSet);
 
 		// create other transitions
 		todoListFragment.setEnterTransition(new Fade());
 		todoListFragment.setReturnTransition(new Fade());
+		todoListFragment.setExitTransition(new Fade());
 
-		setExitTransition(new Fade().setDuration(2400));
+		setExitTransition(new Fade());
 		setReenterTransition(null);
 
 		String titleViewTransitionName = view.getTransitionName();

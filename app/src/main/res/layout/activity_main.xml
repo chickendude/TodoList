@@ -29,5 +29,6 @@
 		android:layout_margin="16dp"
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentEnd="true"
+		android:elevation="5dp"
 		android:onClick="onFabClick"/>
 </RelativeLayout>

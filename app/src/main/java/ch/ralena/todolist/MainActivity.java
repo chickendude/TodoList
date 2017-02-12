@@ -9,6 +9,7 @@ import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import ch.ralena.todolist.fragments.MainFragment;
 import ch.ralena.todolist.fragments.NewTodoListFragment;
@@ -22,6 +23,7 @@ public class MainActivity extends Activity implements NewTodoListFragment.Submit
 	private static final String TAG_MAIN_FRAGMENT = "main_fragment";
 	private static final String TAG_NEW_TODO_LIST = "new_todo_list";
 	private MainFragment mMainFragment;
+	private RelativeLayout mRelativeLayout;
 
 	private static ImageView mFAB;
 
@@ -30,6 +32,7 @@ public class MainActivity extends Activity implements NewTodoListFragment.Submit
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		mRelativeLayout = (RelativeLayout) findViewById(R.id.activity_main);
 		mFAB = (ImageView) findViewById(R.id.fab);
 		showFab();
 
@@ -61,7 +64,7 @@ public class MainActivity extends Activity implements NewTodoListFragment.Submit
 		Transition fab = new Scale();
 		fab.addTarget(mFAB);
 		ViewGroup viewGroup = (ViewGroup) findViewById(R.id.placeHolder);
-		TransitionManager.beginDelayedTransition(viewGroup, fab);
+		TransitionManager.beginDelayedTransition(mRelativeLayout, fab);
 		mFAB.setVisibility(visibility);
 	}
 
