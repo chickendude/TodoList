@@ -1,5 +1,6 @@
 package ch.ralena.todolist.fragments;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,6 +38,14 @@ public class NewTodoListFragment extends DialogFragment {
 		super.onAttach(context);
 		listener = (SubmitNewTodoListListener) context;
 	}
+
+	// for API<23
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		listener = (SubmitNewTodoListListener) activity;
+	}
+
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
