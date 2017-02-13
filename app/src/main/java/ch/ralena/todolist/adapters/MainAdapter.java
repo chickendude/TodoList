@@ -106,6 +106,7 @@ public class MainAdapter extends RecyclerView.Adapter implements ItemTouchHelper
 		TodoList mTodoList;
 		CheckBox mCompletedCheckBox;
 		public ImageView dragImage;
+		int mPosition;
 
 		public ViewHolder(View view) {
 			super(view);
@@ -133,22 +134,27 @@ public class MainAdapter extends RecyclerView.Adapter implements ItemTouchHelper
 		}
 
 		public void bindView(final TodoList todoList, int position) {
+			mPosition = position;
 			mTitleLabel.setTransitionName("title_label" + position);
 			mRelativeLayout.setTransitionName("relative_layout" + position);
 			mTodoList = todoList;
+			calculateRatio();
+			mCompletedCheckBox.setChecked(mTodoList.isCompleted());
+			hideEditor();
+		}
+
+		private void calculateRatio() {
 			String completedRation = "";
-			if (todoList.getTodoItems().size() > 0) {
+			if (mTodoList.getTodoItems().size() > 0) {
 				int numCompleted = 0;
-				for (Todo todo : todoList.getTodoItems()) {
+				for (Todo todo : mTodoList.getTodoItems()) {
 					if (todo.isCompleted()) {
 						numCompleted++;
 					}
 				}
-				completedRation = String.format("%d/%d", numCompleted, todoList.getTodoItems().size());
+				completedRation = String.format("%d/%d", numCompleted, mTodoList.getTodoItems().size());
 			}
 			mCompletedLabel.setText(completedRation);
-			mCompletedCheckBox.setChecked(mTodoList.isCompleted());
-			hideEditor();
 		}
 
 		CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
@@ -156,6 +162,7 @@ public class MainAdapter extends RecyclerView.Adapter implements ItemTouchHelper
 			public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 				mTodoList.setCompleted(isChecked);
 				mDataListener.onCompletionStatusChanged(mTodoList);
+				calculateRatio();
 			}
 		};
 
