@@ -18,4 +18,8 @@ class ActivityModule(
 	@Provides
 	@ActivityScope
 	fun layoutInflater() = activity.layoutInflater
+
+	@Provides
+	@ActivityScope
+	fun fragmentManager() = activity.supportFragmentManager
 }

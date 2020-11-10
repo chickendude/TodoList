@@ -18,7 +18,7 @@ import ch.ralena.todolist.adapters.TodoListAdapater;
 import ch.ralena.todolist.data.local.sql.SqlManager;
 import ch.ralena.todolist.data.models.Todo;
 import ch.ralena.todolist.data.models.TodoList;
-import ch.ralena.todolist.ui.activities.MainActivity3;
+import ch.ralena.todolist.ui.activities.MainActivity;
 
 /**
  * Created by crater-windoze on 12/26/2016.
@@ -41,7 +41,7 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		mSqlManager = new SqlManager(getActivity());
 
-		((MainActivity3) getActivity()).hideFab();
+		((MainActivity) getActivity()).hideFab();
 
 
 		// pull our todolist from the parcelables

@@ -2,6 +2,8 @@ package ch.ralena.todolist.ui.activities
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import ch.ralena.todolist.ui.ScreensNavigator
 import ch.ralena.todolist.ui.viewmvc.ViewMvcFactory
 import javax.inject.Inject
 
@@ -13,6 +15,9 @@ class MainActivity : BaseActivity(), MainActivityViewMvc.Listener {
 	@Inject
 	lateinit var viewMvcFactory: ViewMvcFactory
 
+	@Inject
+	lateinit var screensNavigator: ScreensNavigator
+
 	private lateinit var viewMvc: MainActivityViewMvc
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +25,7 @@ class MainActivity : BaseActivity(), MainActivityViewMvc.Listener {
 		injector.inject(this)
 		viewMvc = viewMvcFactory.newMainActivityViewMvc()
 		setContentView(viewMvc.rootView)
+		screensNavigator.toMainFragment()
 	}
 
 	override fun onStart() {
@@ -32,7 +38,17 @@ class MainActivity : BaseActivity(), MainActivityViewMvc.Listener {
 		viewMvc.unregisterListener(this)
 	}
 
+	fun hideFab() {
+		viewMvc.animateFab(View.GONE)
+	}
+
+	fun showFab() {
+		viewMvc.animateFab(View.VISIBLE)
+	}
+
+
 	override fun onFabClick() {
 		Log.d(TAG, "fab clicked")
+		hideFab()
 	}
 }

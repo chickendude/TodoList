@@ -24,7 +24,6 @@ import ch.ralena.todolist.adapters.MainAdapter;
 import ch.ralena.todolist.data.local.sql.SqlManager;
 import ch.ralena.todolist.data.models.Todo;
 import ch.ralena.todolist.data.models.TodoList;
-import ch.ralena.todolist.ui.activities.MainActivity3;
 import ch.ralena.todolist.ui.itemhelper.ItemDragListener;
 
 /**
@@ -60,7 +59,7 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
 
 		// show FAB
-		((MainActivity3) getActivity()).showFab();
+//		((MainActivity) getActivity()).showFab();
 
 		// set up RecyclerView and adapter
 		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
