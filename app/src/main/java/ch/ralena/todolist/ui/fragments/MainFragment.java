@@ -1,6 +1,5 @@
 package ch.ralena.todolist.ui.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.transition.ChangeBounds;
 import android.transition.ChangeClipBounds;
@@ -16,16 +15,17 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.MainAdapter;
-import ch.ralena.todolist.ui.itemhelper.ItemDragListener;
+import ch.ralena.todolist.data.local.sql.SqlManager;
 import ch.ralena.todolist.data.models.Todo;
 import ch.ralena.todolist.data.models.TodoList;
-import ch.ralena.todolist.data.local.sql.SqlManager;
-import ch.ralena.todolist.ui.activities.MainActivity;
+import ch.ralena.todolist.ui.activities.MainActivity3;
+import ch.ralena.todolist.ui.itemhelper.ItemDragListener;
 
 /**
  * Created by crater-windoze on 12/20/2016.
@@ -60,7 +60,7 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
 
 		// show FAB
-		((MainActivity) getActivity()).showFab();
+		((MainActivity3) getActivity()).showFab();
 
 		// set up RecyclerView and adapter
 		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);

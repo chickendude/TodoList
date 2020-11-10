@@ -1,0 +1,38 @@
+package ch.ralena.todolist.ui.activities
+
+import android.os.Bundle
+import android.util.Log
+import ch.ralena.todolist.ui.viewmvc.ViewMvcFactory
+import javax.inject.Inject
+
+class MainActivity : BaseActivity(), MainActivityViewMvc.Listener {
+	companion object {
+		const val TAG = "MainActivity2"
+	}
+
+	@Inject
+	lateinit var viewMvcFactory: ViewMvcFactory
+
+	private lateinit var viewMvc: MainActivityViewMvc
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		injector.inject(this)
+		viewMvc = viewMvcFactory.newMainActivityViewMvc()
+		setContentView(viewMvc.rootView)
+	}
+
+	override fun onStart() {
+		super.onStart()
+		viewMvc.registerListener(this)
+	}
+
+	override fun onStop() {
+		super.onStop()
+		viewMvc.unregisterListener(this)
+	}
+
+	override fun onFabClick() {
+		Log.d(TAG, "fab clicked")
+	}
+}

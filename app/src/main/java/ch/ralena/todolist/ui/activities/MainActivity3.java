@@ -1,7 +1,5 @@
 package ch.ralena.todolist.ui.activities;
 
-import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.transition.Transition;
 import android.transition.TransitionManager;
@@ -10,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.data.models.TodoList;
 import ch.ralena.todolist.ui.fragments.MainFragment;
@@ -17,8 +17,8 @@ import ch.ralena.todolist.ui.fragments.NewTodoListFragment;
 import ch.ralena.todolist.ui.transitions.Scale;
 
 // TODO: Check into automatic animations via layout
-public class MainActivity extends BaseActivity implements NewTodoListFragment.SubmitNewTodoListListener {
-	private static final String TAG = MainActivity.class.getSimpleName();
+public class MainActivity3 extends BaseActivity implements NewTodoListFragment.SubmitNewTodoListListener {
+	private static final String TAG = MainActivity3.class.getSimpleName();
 
 	private static final String TAG_MAIN_FRAGMENT = "main_fragment";
 	private static final String TAG_NEW_TODO_LIST = "new_todo_list";
@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity implements NewTodoListFragment.Su
 		showFab();
 
 		// Load main fragment
-		FragmentManager fragmentManager = getFragmentManager();
+		FragmentManager fragmentManager = getSupportFragmentManager();
 
 		// make sure we don't load it multiple times
 		MainFragment savedFragment = (MainFragment) fragmentManager

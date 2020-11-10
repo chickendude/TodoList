@@ -1,6 +1,5 @@
 package ch.ralena.todolist.ui.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,14 +10,15 @@ import android.widget.CheckBox;
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.TodoListAdapater;
+import ch.ralena.todolist.data.local.sql.SqlManager;
 import ch.ralena.todolist.data.models.Todo;
 import ch.ralena.todolist.data.models.TodoList;
-import ch.ralena.todolist.data.local.sql.SqlManager;
-import ch.ralena.todolist.ui.activities.MainActivity;
+import ch.ralena.todolist.ui.activities.MainActivity3;
 
 /**
  * Created by crater-windoze on 12/26/2016.
@@ -41,7 +41,7 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		mSqlManager = new SqlManager(getActivity());
 
-		((MainActivity) getActivity()).hideFab();
+		((MainActivity3) getActivity()).hideFab();
 
 
 		// pull our todolist from the parcelables
