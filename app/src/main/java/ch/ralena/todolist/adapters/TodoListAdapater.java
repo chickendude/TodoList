@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import androidx.recyclerview.widget.RecyclerView;
 import ch.ralena.todolist.R;
-import ch.ralena.todolist.objects.Todo;
+import ch.ralena.todolist.data.models.Todo;
 
 /**
  * Created by crater-windoze on 12/26/2016.

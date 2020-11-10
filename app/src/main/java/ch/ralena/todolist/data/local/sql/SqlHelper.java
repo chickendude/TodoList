@@ -1,4 +1,4 @@
-package ch.ralena.todolist.sql;
+package ch.ralena.todolist.data.local.sql;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

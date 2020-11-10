@@ -1,4 +1,4 @@
-package ch.ralena.todolist.fragments;
+package ch.ralena.todolist.ui.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import ch.ralena.todolist.MainActivity;
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.TodoListAdapater;
-import ch.ralena.todolist.objects.Todo;
-import ch.ralena.todolist.objects.TodoList;
-import ch.ralena.todolist.sql.SqlManager;
+import ch.ralena.todolist.data.models.Todo;
+import ch.ralena.todolist.data.models.TodoList;
+import ch.ralena.todolist.data.local.sql.SqlManager;
+import ch.ralena.todolist.ui.activities.MainActivity;
 
 /**
  * Created by crater-windoze on 12/26/2016.

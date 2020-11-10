@@ -1,4 +1,4 @@
-package ch.ralena.todolist.sql;
+package ch.ralena.todolist.data.local.sql;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,8 +8,8 @@ import android.provider.BaseColumns;
 
 import java.util.ArrayList;
 
-import ch.ralena.todolist.objects.Todo;
-import ch.ralena.todolist.objects.TodoList;
+import ch.ralena.todolist.data.models.Todo;
+import ch.ralena.todolist.data.models.TodoList;
 
 /**
  * Created by crater-windoze on 12/22/2016.

@@ -1,4 +1,4 @@
-package ch.ralena.todolist.transitions;
+package ch.ralena.todolist.ui.transitions;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;

@@ -1,4 +1,4 @@
-package ch.ralena.todolist.itemhelper;
+package ch.ralena.todolist.ui.itemhelper;
 
 import androidx.recyclerview.widget.RecyclerView;
 

@@ -22,11 +22,11 @@ import java.util.List;
 import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import ch.ralena.todolist.R;
-import ch.ralena.todolist.fragments.MainFragment;
-import ch.ralena.todolist.itemhelper.ItemDragListener;
-import ch.ralena.todolist.itemhelper.ItemTouchHelperListener;
-import ch.ralena.todolist.objects.Todo;
-import ch.ralena.todolist.objects.TodoList;
+import ch.ralena.todolist.ui.fragments.MainFragment;
+import ch.ralena.todolist.ui.itemhelper.ItemDragListener;
+import ch.ralena.todolist.ui.itemhelper.ItemTouchHelperListener;
+import ch.ralena.todolist.data.models.Todo;
+import ch.ralena.todolist.data.models.TodoList;
 
 /**
  * Created by crater-windoze on 12/20/2016.

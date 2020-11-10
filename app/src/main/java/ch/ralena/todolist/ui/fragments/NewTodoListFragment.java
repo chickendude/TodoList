@@ -1,4 +1,4 @@
-package ch.ralena.todolist.fragments;
+package ch.ralena.todolist.ui.fragments;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import ch.ralena.todolist.R;
-import ch.ralena.todolist.objects.TodoList;
+import ch.ralena.todolist.data.models.TodoList;
 
 /**
  * Created by crater-windoze on 12/20/2016.

@@ -12,7 +12,7 @@
 	android:paddingLeft="0dp"
 	android:paddingRight="0dp"
 	android:paddingTop="0dp"
-	tools:context="ch.ralena.todolist.MainActivity">
+	tools:context="ch.ralena.todolist.ui.activities.MainActivity">
 
 	<FrameLayout
 		android:id="@+id/placeHolder"

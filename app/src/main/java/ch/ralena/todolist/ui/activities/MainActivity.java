@@ -1,6 +1,5 @@
-package ch.ralena.todolist;
+package ch.ralena.todolist.ui.activities;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -11,13 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import ch.ralena.todolist.fragments.MainFragment;
-import ch.ralena.todolist.fragments.NewTodoListFragment;
-import ch.ralena.todolist.objects.TodoList;
-import ch.ralena.todolist.transitions.Scale;
+import ch.ralena.todolist.R;
+import ch.ralena.todolist.data.models.TodoList;
+import ch.ralena.todolist.ui.fragments.MainFragment;
+import ch.ralena.todolist.ui.fragments.NewTodoListFragment;
+import ch.ralena.todolist.ui.transitions.Scale;
 
 // TODO: Check into automatic animations via layout
-public class MainActivity extends Activity implements NewTodoListFragment.SubmitNewTodoListListener {
+public class MainActivity extends BaseActivity implements NewTodoListFragment.SubmitNewTodoListListener {
 	private static final String TAG = MainActivity.class.getSimpleName();
 
 	private static final String TAG_MAIN_FRAGMENT = "main_fragment";
