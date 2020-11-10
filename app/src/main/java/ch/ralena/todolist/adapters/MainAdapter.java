@@ -1,8 +1,6 @@
 package ch.ralena.todolist.adapters;
 
 import android.content.res.Resources;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,6 +19,8 @@ import android.widget.TextView;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.core.view.MotionEventCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.fragments.MainFragment;
 import ch.ralena.todolist.itemhelper.ItemDragListener;

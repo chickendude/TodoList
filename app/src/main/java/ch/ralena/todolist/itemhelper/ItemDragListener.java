@@ -1,6 +1,6 @@
 package ch.ralena.todolist.itemhelper;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by crater-windoze on 2/10/2017.

@@ -1,6 +1,5 @@
 package ch.ralena.todolist.adapters;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import androidx.recyclerview.widget.RecyclerView;
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.objects.Todo;
 
