@@ -15,7 +15,7 @@ class NewTodoListViewMvc(
 		R.layout.fragment_newtodolist
 ) {
 	interface Listener {
-
+		fun onSubmitted()
 	}
 
 }
