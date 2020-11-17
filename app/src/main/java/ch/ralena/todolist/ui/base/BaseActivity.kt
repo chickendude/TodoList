@@ -1,4 +1,4 @@
-package ch.ralena.todolist.ui.activities
+package ch.ralena.todolist.ui.base
 
 import androidx.appcompat.app.AppCompatActivity
 import ch.ralena.todolist.MyApplication
@@ -8,7 +8,7 @@ import ch.ralena.todolist.di.modules.PresentationModule
 open class BaseActivity : AppCompatActivity() {
 	private val applicationComponent get() = (application as MyApplication).applicationComponent
 
-	private val activityComponent by lazy {
+	val activityComponent by lazy {
 		applicationComponent.newActivityComponent(
 				ActivityModule(this)
 		)

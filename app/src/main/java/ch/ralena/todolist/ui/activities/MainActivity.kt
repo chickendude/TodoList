@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import ch.ralena.todolist.ui.ScreensNavigator
+import ch.ralena.todolist.ui.base.BaseActivity
 import ch.ralena.todolist.ui.viewmvc.ViewMvcFactory
 import javax.inject.Inject
 
@@ -50,5 +51,6 @@ class MainActivity : BaseActivity(), MainActivityViewMvc.Listener {
 	override fun onFabClick() {
 		Log.d(TAG, "fab clicked")
 		hideFab()
+		screensNavigator.toNewTodoListFragment()
 	}
 }

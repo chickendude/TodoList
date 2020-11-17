@@ -1,9 +1,7 @@
 package ch.ralena.todolist.di.modules
 
-import android.app.Activity
-import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
-import ch.ralena.todolist.di.scopes.ActivityScope
+import ch.ralena.todolist.di.ActivityScope
 import dagger.Module
 import dagger.Provides
 

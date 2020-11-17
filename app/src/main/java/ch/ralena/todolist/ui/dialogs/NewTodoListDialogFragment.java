@@ -1,4 +1,4 @@
-package ch.ralena.todolist.ui.fragments;
+package ch.ralena.todolist.ui.dialogs;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -23,7 +23,7 @@ import ch.ralena.todolist.data.models.TodoList;
  * Created by crater-windoze on 12/20/2016.
  */
 
-public class NewTodoListFragment extends DialogFragment {
+public class NewTodoListDialogFragment extends DialogFragment {
 
 	private SubmitNewTodoListListener listener;
 	private EditText mEditText;
@@ -68,8 +68,9 @@ public class NewTodoListFragment extends DialogFragment {
 		// make dialog disappear when you click outside
 		getDialog().setCanceledOnTouchOutside(true);
 		// set up views
-		View view = inflater.inflate(R.layout.fragment_new_todolist, container);
+		View view = inflater.inflate(R.layout.fragment_newtodolist, container);
 
+		
 		// set up onclick listener for create button
 		Button button = (Button) view.findViewById(R.id.createButton);
 		button.setOnClickListener(new View.OnClickListener() {

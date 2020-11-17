@@ -2,7 +2,7 @@ package ch.ralena.todolist.di.components
 
 import ch.ralena.todolist.di.modules.ActivityModule
 import ch.ralena.todolist.di.modules.ApplicationModule
-import ch.ralena.todolist.di.scopes.AppScope
+import ch.ralena.todolist.di.AppScope
 import dagger.Component
 
 @AppScope
