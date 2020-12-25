@@ -19,6 +19,7 @@ import ch.ralena.todolist.data.local.sql.SqlManager;
 import ch.ralena.todolist.data.models.Todo;
 import ch.ralena.todolist.data.models.TodoList;
 import ch.ralena.todolist.ui.activities.MainActivity;
+import ch.ralena.todolist.ui.home.HomeFragment3;
 
 /**
  * Created by crater-windoze on 12/26/2016.
@@ -45,10 +46,10 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 
 
 		// pull our todolist from the parcelables
-		mTodoList = getArguments().getParcelable(MainFragment.TAG_TODO_LISTS);
+		mTodoList = getArguments().getParcelable(HomeFragment3.TAG_TODO_LISTS);
 
-		String transitionName = getArguments().getString(MainFragment.TAG_TRANSITION_NAME);
-		String relativeLayoutTransitionName = getArguments().getString(MainFragment.TAG_TRANSITION_RELATIVELAYOUT);
+		String transitionName = getArguments().getString(HomeFragment3.TAG_TRANSITION_NAME);
+		String relativeLayoutTransitionName = getArguments().getString(HomeFragment3.TAG_TRANSITION_RELATIVELAYOUT);
 		Log.d(TAG, relativeLayoutTransitionName);
 
 		// inflate views

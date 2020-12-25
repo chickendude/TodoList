@@ -7,6 +7,6 @@ import ch.ralena.todolist.di.modules.ApplicationModule
 class MyApplication: Application() {
 	val applicationComponent = DaggerApplicationComponent
 			.builder()
-//			.applicationModule(ApplicationModule(this))
+			.applicationModule(ApplicationModule(this))
 			.build()
 }

@@ -1,4 +1,4 @@
-package ch.ralena.todolist.ui.fragments;
+package ch.ralena.todolist.ui.home;
 
 import android.os.Bundle;
 import android.transition.ChangeBounds;
@@ -12,27 +12,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import java.util.ArrayList;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.MainAdapter;
 import ch.ralena.todolist.data.local.sql.SqlManager;
 import ch.ralena.todolist.data.models.Todo;
 import ch.ralena.todolist.data.models.TodoList;
+import ch.ralena.todolist.ui.fragments.TodoListFragment;
 import ch.ralena.todolist.ui.itemhelper.ItemDragListener;
 
 /**
  * Created by crater-windoze on 12/20/2016.
  */
 
-public class MainFragment extends Fragment implements MainAdapter.OnDataChangedListener, MainAdapter.OnItemClickedListener, ItemDragListener {
+public class HomeFragment3 extends Fragment implements MainAdapter.OnDataChangedListener, MainAdapter.OnItemClickedListener, ItemDragListener {
 	// constants
-	private static final String TAG = MainFragment.class.getSimpleName();
+	private static final String TAG = HomeFragment3.class.getSimpleName();
 	public static final String TAG_TODO_LISTS = "todo_lists";
 	public static final String TAG_TRANSITION_NAME = "transition_name";
 	public static final String TAG_TRANSITION_RELATIVELAYOUT = "transition_relative_layout";
@@ -56,14 +58,14 @@ public class MainFragment extends Fragment implements MainAdapter.OnDataChangedL
 			mTodoLists = savedInstanceState.getParcelableArrayList(TAG_TODO_LISTS);
 		}
 
-		View view = inflater.inflate(R.layout.fragment_main, container, false);
+		View view = inflater.inflate(R.layout.fragment_home, container, false);
 
 		// show FAB
 //		((MainActivity) getActivity()).showFab();
 
 		// set up RecyclerView and adapter
 		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-		mAdapter = new MainAdapter(mTodoLists, this);
+//		mAdapter = new MainAdapter(mTodoLists, this);
 		recyclerView.setAdapter(mAdapter);
 		// prepare LayoutManager
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());

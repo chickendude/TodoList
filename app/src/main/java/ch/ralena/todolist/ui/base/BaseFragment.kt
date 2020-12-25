@@ -7,8 +7,14 @@ import ch.ralena.todolist.MyApplication
 import ch.ralena.todolist.di.modules.ActivityModule
 import ch.ralena.todolist.di.modules.FragmentModule
 import ch.ralena.todolist.di.modules.PresentationModule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
 
 open class BaseFragment : Fragment() {
+	protected val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
 	private val activityComponent get() = (requireActivity() as BaseActivity).activityComponent
 
 	private val fragmentComponent by lazy {
@@ -22,4 +28,9 @@ open class BaseFragment : Fragment() {
 	}
 
 	val injector get() = presentationComponent
+
+	override fun onStop() {
+		super.onStop()
+		coroutineScope.coroutineContext.cancelChildren()
+	}
 }

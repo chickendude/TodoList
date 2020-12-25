@@ -1,4 +1,4 @@
-package ch.ralena.todolist.adapters;
+package ch.ralena.todolist.ui.home.todolists;
 
 import android.content.res.Resources;
 import android.view.KeyEvent;
@@ -16,17 +16,18 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.view.MotionEventCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.Collections;
 import java.util.List;
 
-import androidx.core.view.MotionEventCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import ch.ralena.todolist.R;
+import ch.ralena.todolist.data.models.Todo;
+import ch.ralena.todolist.data.models.TodoList;
 import ch.ralena.todolist.ui.home.HomeFragment3;
 import ch.ralena.todolist.ui.itemhelper.ItemDragListener;
 import ch.ralena.todolist.ui.itemhelper.ItemTouchHelperListener;
-import ch.ralena.todolist.data.models.Todo;
-import ch.ralena.todolist.data.models.TodoList;
 
 /**
  * Created by crater-windoze on 12/20/2016.
