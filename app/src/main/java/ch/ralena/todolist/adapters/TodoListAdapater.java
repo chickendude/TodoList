@@ -92,9 +92,9 @@ public class TodoListAdapater extends RecyclerView.Adapter {
 			mTodo = null;
 			mTodoLayout = (RelativeLayout) view.findViewById(R.id.todoItemLayout);
 			mTodoEditLayout = (LinearLayout) view.findViewById(R.id.editTodoItemLayout);
-			mTodoItemBox = (CheckBox) view.findViewById(R.id.todoItemBox);
+//			mTodoItemBox = (CheckBox) view.findViewById(R.id.todoItemBox);
 			mTodoItemBox.setOnCheckedChangeListener(mCheckedChangeListener);
-			mTodoItemLabel = (TextView) view.findViewById(R.id.todoItemLabel);
+//			mTodoItemLabel = (TextView) view.findViewById(R.id.todoItemLabel);
 			mTodoEdit = (EditText) view.findViewById(R.id.todoEdit);
 			mTodoEdit.setOnFocusChangeListener(mOnFocusChangeListener);
 			mTodoButton = (TextView) view.findViewById(R.id.editButton);

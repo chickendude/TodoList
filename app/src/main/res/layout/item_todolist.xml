@@ -1,59 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  xmlns:tools="http://schemas.android.com/tools"
-			  android:layout_width="match_parent"
-			  android:layout_height="wrap_content"
-			  android:layout_marginBottom="5dp"
-			  android:layout_marginLeft="5dp"
-			  android:layout_marginTop="5dp"
-			  android:orientation="horizontal">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:orientation="horizontal">
 
-	<RelativeLayout
-		android:id="@+id/todoItemLayout"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-		<TextView
-			android:id="@+id/todoItemLabel"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_toLeftOf="@+id/todoItemBox"
-			android:textColor="#818181"
-			android:textSize="22sp"
-			tools:text="Description of todo"/>
+    <RelativeLayout
+        android:id="@+id/todoItemLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-		<CheckBox
-			android:id="@+id/todoItemBox"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentEnd="true"/>
-	</RelativeLayout>
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/cbCompleted"
+            android:textColor="#818181"
+            android:textSize="22sp"
+            tools:text="Description of todo" />
 
-	<LinearLayout
-		android:id="@+id/editTodoItemLayout"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:visibility="gone">
+        <CheckBox
+            android:id="@+id/cbCompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 
-		<EditText
-			android:id="@+id/todoEdit"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:textSize="22sp"/>
+    <LinearLayout
+        android:id="@+id/editTodoItemLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
-		<TextView
-			android:id="@+id/editButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="0"
-			android:background="@drawable/button_green"
-			android:clickable="true"
-			android:padding="7dp"
-			android:text="DONE"
-			android:textColor="@color/colorPrimaryDark"
-			android:textSize="16sp"
-			android:textStyle="bold"/>
-	</LinearLayout>
+        <EditText
+            android:id="@+id/todoEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:background="@drawable/button_green"
+            android:clickable="true"
+            android:padding="7dp"
+            android:text="DONE"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>

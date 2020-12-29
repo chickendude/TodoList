@@ -1,40 +1,42 @@
 package ch.ralena.todolist.ui.home.todolists
 
-import android.view.LayoutInflater
-import android.view.View
+import android.content.Context
+import android.os.Bundle
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import android.widget.Toast
 import ch.ralena.todolist.R
 import ch.ralena.todolist.data.local.db.entities.TodoList
+import ch.ralena.todolist.ui.activities.MainActivity
+import ch.ralena.todolist.ui.base.BaseAdapter
+import ch.ralena.todolist.ui.fragments.TodoListFragment
+import ch.ralena.todolist.ui.home.HomeFragment3
 
-class TodoListItemAdapter(private val todoLists: ArrayList<TodoList>) : RecyclerView.Adapter<TodoListItemAdapter.ViewHolder>() {
+class TodoListItemAdapter(
+		todoLists: ArrayList<TodoList>,
+		private val context: Context
+) : BaseAdapter<TodoList, TodoListItemViewHolder.Listener, TodoListItemViewHolder>(
+		todoLists
+), TodoListItemViewHolder.Listener {
 
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-		val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_todolist, parent, false)
-		return ViewHolder(itemView)
-	}
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+			TodoListItemViewHolder(parent)
+					.apply { registerListener(this@TodoListItemAdapter) }
 
-	override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(todoLists[position])
+	override fun onClicked(item: TodoList) {
+		Toast.makeText(context, item.title, Toast.LENGTH_SHORT).show()
 
-	override fun getItemCount(): Int {
-		return todoLists.size
-	}
+		val todoListFragment = TodoListFragment()
 
-	fun updateData(data: List<TodoList>) {
-		todoLists.clear()
-		todoLists.addAll(data)
-		notifyDataSetChanged()
-	}
 
-	class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-		private val title: TextView = itemView.findViewById(R.id.todoItemLabel)
-		private val completed: CheckBox = itemView.findViewById(R.id.todoItemBox)
+		// pull our todolist from the parcelables
+		val bundle = Bundle()
+		bundle.putParcelable(HomeFragment3.TAG_TODO_LISTS, item)
+		todoListFragment.arguments = bundle
 
-		fun bind(todoList: TodoList) {
-			title.text = todoList.title
-			completed.isChecked = todoList.isCompleted
-		}
+
+		(context as MainActivity).supportFragmentManager.beginTransaction()
+				.replace(R.id.placeHolder, todoListFragment)
+				.addToBackStack(null)
+				.commit()
 	}
 }

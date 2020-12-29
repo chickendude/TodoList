@@ -25,7 +25,7 @@ class ActivityModule(
 
 	@Provides
 	@ActivityScope
-	fun todoListItemAdapter(): TodoListItemAdapter = TodoListItemAdapter(arrayListOf())
+	fun todoListItemAdapter(): TodoListItemAdapter = TodoListItemAdapter(arrayListOf(), activity)
 
 	@Provides
 	@ActivityScope

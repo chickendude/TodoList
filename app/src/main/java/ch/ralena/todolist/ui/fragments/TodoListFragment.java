@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ch.ralena.todolist.R;
 import ch.ralena.todolist.adapters.TodoListAdapater;
+import ch.ralena.todolist.data.local.db.entities.TodoList;
 import ch.ralena.todolist.data.local.sql.SqlManager;
 import ch.ralena.todolist.data.models.Todo;
-import ch.ralena.todolist.data.models.TodoList;
 import ch.ralena.todolist.ui.activities.MainActivity;
 import ch.ralena.todolist.ui.home.HomeFragment3;
 
@@ -50,7 +50,7 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 
 		String transitionName = getArguments().getString(HomeFragment3.TAG_TRANSITION_NAME);
 		String relativeLayoutTransitionName = getArguments().getString(HomeFragment3.TAG_TRANSITION_RELATIVELAYOUT);
-		Log.d(TAG, relativeLayoutTransitionName);
+//		Log.d(TAG, relativeLayoutTransitionName);
 
 		// inflate views
 		View view = inflater.inflate(R.layout.fragment_todolist, container, false);
@@ -62,8 +62,8 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 		mTitleBox.setTransitionName(transitionName);
 		// set up recycler view
 		RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-		mAdapter = new TodoListAdapater(mTodoList.getTodoItems(), this);
-		recyclerView.setAdapter(mAdapter);
+//		mAdapter = new TodoListAdapater(mTodoList.getTodoItems(), this);
+//		recyclerView.setAdapter(mAdapter);
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 		recyclerView.setLayoutManager(layoutManager);
 		return view;
@@ -78,13 +78,13 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 	@Override
 	public void addNewTodoItem() {
 		Todo todo = new Todo("");
-		mTodoList.getTodoItems().add(todo);
+//		mTodoList.getTodoItems().add(todo);
 		mAdapter.notifyDataSetChanged();
 	}
 
 	@Override
 	public void onCompletedChanged(final Todo todo) {
-		if (!todo.isCompleted()) {
+/*		if (!todo.isCompleted()) {
 			mTitleBox.setChecked(false);
 			mTodoList.setCompleted(false);
 		} else {
@@ -103,7 +103,7 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 				mSqlManager.updateTodoListCompleted(mTodoList);
 				mSqlManager.updateTodoItemCompleted(todo);
 			}
-		}).start();
+		}).start();*/
 	}
 
 	@Override
@@ -114,10 +114,10 @@ public class TodoListFragment extends Fragment implements TodoListAdapater.OnTod
 	@Override
 	public void onClick(View view) {
 		boolean isChecked = mTitleBox.isChecked();
-		ArrayList<Todo> todos = mTodoList.getTodoItems();
-		for (Todo todo : todos) {
-			todo.setCompleted(isChecked);
-		}
+//		ArrayList<Todo> todos = mTodoList.getTodoItems();
+//		for (Todo todo : todos) {
+//			todo.setCompleted(isChecked);
+//		}
 		mAdapter.notifyDataSetChanged();
 	}
 }
