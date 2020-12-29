@@ -11,10 +11,9 @@ import javax.inject.Inject
 
 open class ViewMvcFactory @Inject constructor(
 		private val layoutInflater: LayoutInflater,
-		private val todoListItemAdapter: TodoListItemAdapter,
-		private val linearLayoutManager: LinearLayoutManager
+		private val todoListItemAdapter: TodoListItemAdapter
 ) {
 	fun newMainActivityViewMvc() = MainActivityViewMvc(layoutInflater, null)
 	fun newNewTodoListViewMvc(parent: ViewGroup?) = NewTodoListViewMvc(layoutInflater, parent)
-	fun newHomeViewMvc(parent: ViewGroup?) = HomeViewMvc(layoutInflater, parent, todoListItemAdapter, linearLayoutManager)
+	fun newHomeViewMvc(parent: ViewGroup?) = HomeViewMvc(layoutInflater, parent, todoListItemAdapter, LinearLayoutManager(parent?.context))
 }

@@ -13,7 +13,7 @@ class HomeViewMvc(
 		layoutInflater: LayoutInflater,
 		parent: ViewGroup?,
 		private val todoListItemAdapter: TodoListItemAdapter,
-		private val linearLayoutManager: LinearLayoutManager
+		linearLayoutManager: LinearLayoutManager
 ) : BaseViewMvc<HomeViewMvc.Listener>(
 		layoutInflater,
 		parent,

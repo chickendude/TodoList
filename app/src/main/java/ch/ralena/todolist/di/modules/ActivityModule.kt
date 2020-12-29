@@ -21,10 +21,6 @@ class ActivityModule(
 
 	@Provides
 	@ActivityScope
-	fun linearLayoutManager() = LinearLayoutManager(activity)
-
-	@Provides
-	@ActivityScope
 	fun todoListItemAdapter(): TodoListItemAdapter = TodoListItemAdapter(arrayListOf(), activity)
 
 	@Provides
